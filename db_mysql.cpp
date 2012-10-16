@@ -6,10 +6,6 @@
  */
 
 #include "db_mysql.h"
-#include "mysqlppconnector/MysqlConnMgr.h"
-#include "mysqlppconnector/MysqlppConnector.h"
-#include "mysqlppconnector/KetamaMysqlConnMgr.h"
-#include "mysqlppconnector/DbConfigCodec.h"
 #include "logger.h"
 
 
@@ -22,11 +18,128 @@ db_mysql::~db_mysql()
 {
 }
 
-bool db_mysql::init()
+bool db_mysql::connect()
 {
+	bool ret = true;
+	try
+	{
+		ret = m_conn.connect(m_dbinfo.db.c_str(),
+			m_dbinfo.addr.c_str(),
+			m_dbinfo.user.c_str(),
+			m_dbinfo.passwd.c_str());
+
+	}
+	catch(const std::Exception& e)
+	{
+		LOG(error)<<"connect failed:"<<e.what()<<ENDL;
+		ret = false;
+	}
+
+	return ret;
 }
 
 
+//获取配置
+int db_mysql::get_instance_cfg(uint32_t inst_id,std::string& data)
+{
+	const std::string sql = "select cfg from service_instance where inst_id = %0";
+
+	try
+	{
+		boost::mutex::scoped_lock lock(m_mutex);
+		mysqlpp::StoreQueryResult result ;
+
+		mysqlpp::SQLQueryParms params;
+		params << inst_id ;
+
+		mysqlpp::Query query = m_conn.query(sql.c_str());
+		query.parse();
+		result = query.store(params);
+
+		if (result.empty())
+		{
+			LOG(trace)<<"No data found"<<ENDL;
+			return 1;
+		}
+		mysqlpp::Row& row = result[0];
+		data.assign(row["cfg"].data(),row["cfg"].size());
+
+
+	}
+	catch(const std::Exception& e)
+	{
+		LOG(error)<<"get_instance_cfg failed:"<<e.what()<<ENDL;
+		return -1;
+	}
+
+	return 0;
+
+}
+
+//保存配置
+int db_mysql::set_instance_cfg(uint32_t inst_id,const std::string& cfg)
+{
+	const std::string sql = "update service_instance set cfg = %0 where inst_id = %1";
+
+	try
+	{
+		boost::mutex::scoped_lock lock(m_mutex);
+
+		mysqlpp::SQLQueryParms params;
+		params << inst_id ;
+
+		mysqlpp::Query query = m_conn.query(sql.c_str());
+		query.parse();
+		query.execute(params);
+	}
+	catch(std::Exception& e)
+	{
+		LOG(error)<<"set_instance_cfg failed:"<<e.what()<<ENDL;
+		return -1;
+	}
+
+	return 0;
+
+}
+
+//获取服务ID
+int db_mysql::get_instance_service(uint32_t inst_id,uint32_t& service_id)
+{
+	const std::string sql = "select service_id from service_instance where inst_id = %0";
+
+	try
+	{
+		boost::mutex::scoped_lock lock(m_mutex);
+		mysqlpp::StoreQueryResult result ;
+
+		mysqlpp::SQLQueryParms params;
+		params << inst_id ;
+
+		mysqlpp::Query query = m_conn.query(sql.c_str());
+		query.parse();
+		result = query.store(params);
+
+		if (result.empty())
+		{
+			LOG(trace)<<"No data found"<<ENDL;
+			return 1;
+		}
+		mysqlpp::Row& row = result[0];
+		service_id = row["service_id"];
+
+	}
+	catch(const std::Exception& e)
+	{
+		LOG(error)<<"get_instance_service failed:"<<e.what()<<ENDL;
+		return -1;
+	}
+
+	return 0;
+
+
+}
+
+/*
 int db_mysql::get_conf_data(uint32_t inst_id,const char* pre=NULL,std::vector<CFG_TYPE>& cfg_list)
 {
 	LOG(trace)<<"inst_id="<<inst_id<<",pre="<<pre<<ENDL;
@@ -86,4 +199,4 @@ int db_mysql::set_conf_data(uint32_t inst_id,const CFG_TYPE& cfg)
 
 	return 0;
 }
-
+*/
