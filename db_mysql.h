@@ -13,6 +13,7 @@
 #include <string>
 #include <boost/thread/thread.hpp>
 #include <boost/thread/mutex.hpp>
+#include "base/singleton.h"
  
 struct db_info
 {
@@ -56,9 +57,11 @@ public:
 
 	//获取配置
 	int get_instance_cfg(uint32_t inst_id,std::string& data);
+	int get_svc_cfg(const std::string& svc,std::string& data);
 
 	//保存配置
 	int set_instance_cfg(uint32_t inst_id,const std::string& cfg);
+	int set_svc_cfg(const std::string& svc,const std::string& cfg);
 
 	//获取服务ID
 	int get_instance_service(uint32_t inst_id,uint32_t& service_id);
@@ -74,6 +77,8 @@ private:
 	db_info m_dbinfo;
 	boost::mutex m_mutex;
 };
+
+typedef Singleton<db_mysql> MYSQLMGR;
 
 #endif /* DB_MYSQL_H_ */
 
