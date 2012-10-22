@@ -16,7 +16,7 @@ class ATOMIC_OPERATE
 	
 		void process(TASK& t)
 		{
-			boost::scoped_lock(mutex_);
+			boost::scoped_lock lock(mutex_);
 			t->run();
 		};
 	private:
@@ -33,7 +33,7 @@ int operate(KEY k,TASK& t)
 	it = opmap.find(k);
 	if (it == opmap::end())
 	{
-		boost::scoped_lock(map_mutex);
+		boost::scoped_lock lock(map_mutex);
 		op = boost::shared_ptr<OPERATE>(new OPERATE);
 		opmap.insert(std::pair<KEY,boost::shared_ptr<OPERATE> >(k,op));
 	}
