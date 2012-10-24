@@ -1,0 +1,111 @@
+package config_server;
+
+enum CmdIDs
+{
+	CmdID_ConfigGet = 1;
+	CmdID_ConfigUpdate = 2;
+	CmdID_ConfigNotify = 3;
+	CmdID_StatusRegister = 4;
+	CmdID_StatusRefresh = 5;
+	CmdID_StatusQuery = 6;
+	CmdID_ServerAcquire = 7;
+
+}
+
+enum NetworkType 
+{
+	NET_UNKNOWN = 1;
+	NET_CT = 2;//中国电信
+	NET_CN = 3;//中国网通
+	NET_CM = 4;//中国移动
+}
+
+message Status 
+{
+	required string server_addr = 1;
+	required string service_type= 2;
+	optional NetworkType network_type = 3;
+	optional string service_name =4;
+	optional uint32 load = 5;
+	optional uint32 status = 6;
+	optional uint32 last_activity = 7;
+}
+
+
+
+
+
+
+
+message ConfigGetRequest
+{
+	required string service_type = 1;
+	optional string path = 2 [default = "."];// "." 表示根路径，也就是该服务的所有配置数据
+}
+message ConfigGetResponse
+{
+	required string config = 1;
+}
+
+
+message ConfigUpdateRequest
+{
+	required string service_type = 1;
+	required string path = 2;
+	required string config = 3;
+}
+	
+
+message CFG_NOTIFY_REQUEST
+{
+	required string path = 1;
+	required string config = 2;
+}
+
+
+message StatusRegisterRequest
+{
+	required Status status = 1;
+}
+
+
+message StatusRefreshRequest
+{
+	required Status status = 1;
+}
+
+message StatusQueryRequest
+{
+}
+message StatusQueryResponse
+{
+	repeated Status status = 1;
+}
+
+
+message ServerAcquireRequest
+{
+	required string service_type = 1;
+}
+message ServerAcquireResponse
+{
+	required string server_addr = 1;
+}
+
+
+message CommonResponse
+{
+	required uint32 code = 1;
+}
+
+
+service ConfigService
+{
+	rpc ConfigGet(ConfigGetRequest) returns(ConfigGetResponse);
+	rpc ConfigUpdate(ConfigUpdateRequest) returns (CommonResponse);
+	rpc StatusRegister(StatusRegisterRequest) returns (CommonResponse);
+	rpc StatusRefresh(StatusRefreshRequest) returns (CommonResponse);
+	rpc StatusQuery(StatusQueryRequest) returns(StatusQueryResponse);
+	rpc ServerAcquire(ServerAcquireRequest) returns(ServerAcquireResponse);
+}
+

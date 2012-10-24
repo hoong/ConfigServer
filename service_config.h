@@ -6,82 +6,70 @@
 #include <boost/thread/thread.hpp>
 #include <boost/thread/mutex.hpp>
 #include <string.h>
-namespace CONFIG_SERVER
+
+namespace config_server
 {
 
 #define DEADTIME 180
 
-struct STATUS
-{
-	std::string addr;
-	std::string name;
-	std::string type;
-	std::string network;
-	uint32_t status;//0 服务正常 1 服务异常
-	uint32_t	load;
-	uint32_t	last_activity;
-	void operator>>(std::string info);
-};
 
-
-
-class service_config_update
+class ServiceConfigUpdate
 {
 public:
-	service_config_update(const std::string& svc_str,
+	ServiceConfigUpdate(const std::string& service_string,
 			const std::string& path_str,
-			const std::string& new_cfg_str,
-			const std::string& old_cfg_str): 
-		svc(svc_str), path(path_str), new_cfg(new_cfg_str),old_cfg(old_cfg_str) {};
-	~service_config_update(){};
+			const std::string& new_config_str,
+			const std::string& old_config_str): 
+		service_type(service_string), path(path_str), new_config(new_config_str),old_config(old_config_str) {};
+	~ServiceConfigUpdate(){};
 
 	int run();
 
 private:
-	std::string svc;
+	std::string service_type;
 	std::string path;
-	std::string new_cfg;
-	std::string old_cfg;
+	std::string new_config;
+	std::string old_config;
 };
 
-typedef base::Singleton<ATOMIC_OPERATE<std::string,service_config_update> > CFG_UPDATE;
+typedef base::Singleton<AtomicOperate<std::string,ServiceConfigUpdate> > ConfigUpdate;
 
 
-class service_instances
+class ServiceInstances
 {
 public:
-	typedef std::map<std::string,boost::shared_ptr<base::net::handler> > POOL_TYPE;
-	typedef POOL_TYPE::iterator IT_TYPE;
-	typedef std::pair<std::string,boost::shared_ptr<base::net::handler> > VALUE_TYPE;
-	typedef std::pair<VALUE_TYPE,bool> RET_TYPE;
+	typedef std::map<std::string,boost::shared_ptr<base::net::handler> > PoolType;
+	typedef PoolType::iterator IteratorType;
+	typedef std::pair<std::string,boost::shared_ptr<base::net::handler> > ValueType;
+	typedef std::pair<ValueType,bool> ReturnType;
 
-	int insert(const std::string& addr,boost::shared_ptr<base::net::handler> ptr);
-	int remove(const std::string& addr);
-	int get_service(std::string& addr);
-	int get_all(std::vector<std::string>& status_list);
-	int notify(const std::string& path,const std::string& cfg);
+	int Insert(const std::string& addr,boost::shared_ptr<base::net::handler> ptr);
+	int Remove(const std::string& addr);
+	int GetService(std::string& addr);
+	int GetAll(std::vector<std::string>& status_list);
+	int Notify(const std::string& path,const std::string& cfg);
 private:
-	POOL_TYPE m_handler_pool;
+	PoolType m_handler_pool;
 	boost::mutex m_mutex;
 };
 
-struct iterate_f
+struct IterateF
 {
+	virtual ~IterateF(){};
 	virtual doit(service_instance&) =0;
 };
 
-typedef int (ITERATE_CB)(service_instance&,void*);
-class service_mgr
+class ServiceManager
 {
 public:
-	service_instances& inst(const std::string& service);
-	void iterate(iterate_f*);
+	ServiceInstances& Inst(const std::string& service);
+	void Iterate(IterateF*);
 private:
-	std::map<std::string,service_instances> data;
+	std::map<std::string,ServiceInstances> data;
 	boost::mutex m_mutex;
 };
 
-typedef base::Singleton<service_mgr> SVCMGR; 
+typedef base::Singleton<ServiceManager> SVCMGR; 
 
 };
 

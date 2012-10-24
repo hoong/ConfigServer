@@ -2,14 +2,14 @@
 #include "db_mysql.h"
 #include "json_man.h"
 
-#define DBMGR MYSQLMGR
+#define DBMGR MySqlMgr
 
-namespace CONFIG_SERVER {
+namespace config_server {
 
-int service_config_update::run()
+int ServiceConfigUpdate::run()
 {
 	std::string cfg ; 
-	DBMGR.get_svc_cfg(svc,cfg);
+	DBMGR.GetServiceConfig(service_type,cfg);
 
 	json_man jm;
 	jm<<cfg;
@@ -19,7 +19,7 @@ int service_config_update::run()
 	}
 
 	int ret;
-	if (0 !=(ret =jm.update(path,new_cfg,old_cfg)))
+	if (0 !=(ret =jm.update(path,new_config,old_config)))
 	{
 		LOG(error)<<"update failed"<<ENDL;
 		if (-2 == ret)
@@ -29,7 +29,7 @@ int service_config_update::run()
 	}
 
 	jm >>cfg;
-	DBMGR.set_svc_cfg(svc.cfg);
+	DBMGR.SetServiceConfig(service_type,cfg);
 
 	return 0;
 };
@@ -37,32 +37,32 @@ int service_config_update::run()
 
 
 
-service_instances& service_mgr::inst(const std::string& service)
+ServiceInstances& ServiceManager::Inst(const std::string& service)
 {
-	std::map<std::string,service_instances>::iterator it = data.find(service);
+	std::map<std::string,ServiceInstances>::iterator it = data.find(service);
 	if(it == data.end())
 	{
 		boost::scoped_lock lock(m_mutex);
-		service_instances si;
-		std::pair<std::map<std::string,service_instances>::iterator,bool> ret =
-			data.insert(std::pair<std::string,service_instances>(service,si));
+		ServiceInstances si;
+		std::pair<std::map<std::string,ServiceInstances>::iterator,bool> ret =
+			data.insert(std::pair<std::string,ServiceInstances>(service,si));
 		return ret.first->second;
 	}
 	return it->second;
 
 };
 
-void service_mgr::iterate(iterate_f*)
+void ServiceManager::Iterate(IterateF* iterate_function)
 {
-	std::map<std::string,service_instances>::iterator it;
+	std::map<std::string,ServiceInstances>::iterator it;
 	for(it=data.first();it!=data.end();++it)
-		iterate_f->doit(*it);
+		iterate_function->doit(*it);
 };
 
-int service_instances::insert(const std::string& addr,boost::shared_ptr<base::net::handler> ptr)
+int ServiceInstances::Insert(const std::string& addr,boost::shared_ptr<base::net::handler> ptr)
 {
 	boost::scoped_lock lock(m_mutex);
-	RET_TYPE ret = m_handler_pool.insert(VALUE_TYPE (addr,ptr));
+	ReturnType ret = m_handler_pool.insert(VALUE_TYPE (addr,ptr));
 	if (ret.second == false)
 	{
 		m_handler_pool.erase(ret.first);
@@ -72,7 +72,7 @@ int service_instances::insert(const std::string& addr,boost::shared_ptr<base::ne
 	return 0;
 };
 
-int service_instances::remove(const std::string& addr)
+int ServiceInstances::Remove(const std::string& addr)
 {
 	boost::scoped_lock lock(m_mutex);
 	m_handler_pool.erase(addr);
@@ -80,7 +80,7 @@ int service_instances::remove(const std::string& addr)
 	return 0;
 };
 
-int service_instances::get_addr(std::string& addr)
+int ServiceInstances::GetAddr(std::string& addr)
 {
 	IT_TYPE it ;
 	std::string server_addr="";
@@ -111,7 +111,7 @@ int service_instances::get_addr(std::string& addr)
 
 };
 
-int service_instances::get_all(std::vector<std::string>& status_list)
+int ServiceInstances::GetAll(std::vector<std::string>& status_list)
 {
 	IT_TYPE it ;
 	for(it = m_handler_pool.begin();it!=m_handler_pool.end();++it)
@@ -126,14 +126,14 @@ int service_instances::get_all(std::vector<std::string>& status_list)
 };
 
 
-int service_instances::notify(const std::string& path,const std::string& cfg)
+int ServiceInstances::Notify(const std::string& path,const std::string& cfg)
 {
 	IT_TYPE it ;
 	for(it = m_handler_pool.begin();it!=m_handler_pool.end();++it)
 	{
 		if (status.last_activity - now >DEADTIME)
 		{
-			it->second->notify(path,cfg);
+			it->second->Notify(path,cfg);
 		};
 	};
 };

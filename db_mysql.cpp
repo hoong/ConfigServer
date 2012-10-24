@@ -40,7 +40,7 @@ bool db_mysql::connect()
 
 
 //获取配置
-int db_mysql::get_instance_cfg(uint32_t inst_id,std::string& data)
+int db_mysql::GetInstanceConfig(uint32_t inst_id,std::string& data)
 {
 	const std::string sql = "select cfg from service_instance where inst_id = %0";
 
@@ -68,7 +68,7 @@ int db_mysql::get_instance_cfg(uint32_t inst_id,std::string& data)
 	}
 	catch(const std::Exception& e)
 	{
-		LOG(error)<<"get_instance_cfg failed:"<<e.what()<<ENDL;
+		LOG(error)<<"GetInstanceConfig failed:"<<e.what()<<ENDL;
 		return -1;
 	}
 
@@ -77,7 +77,7 @@ int db_mysql::get_instance_cfg(uint32_t inst_id,std::string& data)
 }
 
 //保存配置
-int db_mysql::set_instance_cfg(uint32_t inst_id,const std::string& cfg)
+int db_mysql::SetInstanceConfig(uint32_t inst_id,const std::string& cfg)
 {
 	const std::string sql = "update service_instance set cfg = %0 where inst_id = %1";
 
@@ -94,7 +94,7 @@ int db_mysql::set_instance_cfg(uint32_t inst_id,const std::string& cfg)
 	}
 	catch(std::Exception& e)
 	{
-		LOG(error)<<"set_instance_cfg failed:"<<e.what()<<ENDL;
+		LOG(error)<<"SetInstanceConfig failed:"<<e.what()<<ENDL;
 		return -1;
 	}
 
@@ -102,8 +102,9 @@ int db_mysql::set_instance_cfg(uint32_t inst_id,const std::string& cfg)
 
 }
 
+/*
 //获取服务ID
-int db_mysql::get_instance_service(uint32_t inst_id,uint32_t& service_id)
+int db_mysql::GetInstanceService(uint32_t inst_id,uint32_t& service_id)
 {
 	const std::string sql = "select service_id from service_instance where inst_id = %0";
 
@@ -130,7 +131,7 @@ int db_mysql::get_instance_service(uint32_t inst_id,uint32_t& service_id)
 	}
 	catch(const std::Exception& e)
 	{
-		LOG(error)<<"get_instance_service failed:"<<e.what()<<ENDL;
+		LOG(error)<<"GetInstanceService failed:"<<e.what()<<ENDL;
 		return -1;
 	}
 
@@ -138,6 +139,7 @@ int db_mysql::get_instance_service(uint32_t inst_id,uint32_t& service_id)
 
 
 }
+*/
 
 /*
 int db_mysql::get_conf_data(uint32_t inst_id,const char* pre=NULL,std::vector<CFG_TYPE>& cfg_list)

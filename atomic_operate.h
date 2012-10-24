@@ -7,14 +7,14 @@
 
 
 template<typename KEY,typename TASK>
-class ATOMIC_OPERATE
+class AtomicOperate
 {
 
-	class OPERATE 
+	class Operate 
 	{
 	public:
 	
-		void process(TASK& t)
+		void Process(TASK& t)
 		{
 			boost::scoped_lock lock(mutex_);
 			t->run();
@@ -27,15 +27,15 @@ public:
 
 int operate(KEY k,TASK& t)
 {
-	boost::shared_ptr<OPERATE> op;
+	boost::shared_ptr<Operate> op;
 
-	std::map<KEY,boost::shared_ptr<OPERATE> >::iterator it;
+	std::map<KEY,boost::shared_ptr<Operate> >::iterator it;
 	it = opmap.find(k);
 	if (it == opmap::end())
 	{
 		boost::scoped_lock lock(map_mutex);
-		op = boost::shared_ptr<OPERATE>(new OPERATE);
-		opmap.insert(std::pair<KEY,boost::shared_ptr<OPERATE> >(k,op));
+		op = boost::shared_ptr<Operate>(new Operate);
+		opmap.insert(std::pair<KEY,boost::shared_ptr<Operate> >(k,op));
 	}
 	else
 	{
@@ -44,7 +44,7 @@ int operate(KEY k,TASK& t)
 
 	if (op.get())
 	{
-		return op->process(t);
+		return op->Process(t);
 	}
 	else
 	{
@@ -57,7 +57,7 @@ int operate(KEY k,TASK& t)
 private:
 
 	boost::mutex map_mutex;
-	std::map<KEY,boost::shared_ptr<OPERATE> > opmap;
+	std::map<KEY,boost::shared_ptr<Operate> > opmap;
 };
 
 

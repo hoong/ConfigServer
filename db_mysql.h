@@ -1,5 +1,5 @@
 /*
- * db_mysql.h
+ * DBMysql.h
  *
  *  Created on: 2012-09-27
  *      Author: root
@@ -15,7 +15,7 @@
 #include <boost/thread/mutex.hpp>
 #include "base/singleton.h"
  
-struct db_info
+struct DbInfo
 {
 	std::string db;
 	std::string addr;
@@ -24,14 +24,14 @@ struct db_info
 };
 
 
-class db_mysql
+class DBMysql
 {
 
 public:
-	db_mysql();
-	virtual ~db_mysql();
+	DBMysql();
+	virtual ~DBMysql();
 
-	bool Init(db_info& info)
+	bool Init(& info)
 	{
 		m_dbinfo=info;
 		return connect();
@@ -40,7 +40,7 @@ public:
 	bool IsConnected() { return m_conn.connected();}
 	
 	//获取数据库信息
-	void get_dbinfo(db_info& info)
+	void get_dbinfo(& info)
 	{
 		info = m_dbinfo;
 	};
@@ -48,7 +48,7 @@ public:
 public:
 
 	//连接数据库
-	bool connect();
+	bool Connect();
 
 	/*
 	//获取服务默认配置
@@ -56,15 +56,17 @@ public:
 	*/
 
 	//获取配置
-	int get_instance_cfg(uint32_t inst_id,std::string& data);
-	int get_svc_cfg(const std::string& svc,std::string& data);
+	int GetInstanceConfig(uint32_t inst_id,std::string& data);
+	int GetServiceConfig(const std::string& svc,std::string& data);
 
 	//保存配置
-	int set_instance_cfg(uint32_t inst_id,const std::string& cfg);
-	int set_svc_cfg(const std::string& svc,const std::string& cfg);
+	int SetInstanceConfig(uint32_t inst_id,const std::string& cfg);
+	int SetServiceConfig(const std::string& svc,const std::string& cfg);
 
+	/*
 	//获取服务ID
-	int get_instance_service(uint32_t inst_id,uint32_t& service_id);
+	int GetInstanceService(uint32_t inst_id,uint32_t& service_id);
+	*/
 
 	/*
 	//新建服务实例
@@ -74,11 +76,11 @@ public:
 
 private:
 	mysqlpp::Connection m_conn;
-	db_info m_dbinfo;
+	DbInfo m_dbinfo;
 	boost::mutex m_mutex;
 };
 
-typedef Singleton<db_mysql> MYSQLMGR;
+typedef Singleton<DBMysql> MySqlMgr;
 
 #endif /* DB_MYSQL_H_ */
 
