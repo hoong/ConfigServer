@@ -52,11 +52,12 @@ message ConfigUpdateRequest
 {
 	required string service_type = 1;
 	required string path = 2;
-	required string config = 3;
+	required string new_config = 3;
+	required string old_config = 4;
 }
 	
 
-message CFG_NOTIFY_REQUEST
+message ConfigNotifyRequest
 {
 	required string path = 1;
 	required string config = 2;

@@ -12,6 +12,7 @@ int main(int argc,char**argv)
 	{
 		service_engine::CommandLineParser cmdline;
 		cmdline.addIntOption("listen-port", "listen port");
+		cmdline.addIntOption("db-info", "db information");
 		//service_engine::Service s(cmdline.parse(argc, argv));
 
 		LOG(info) << "\n\n====== server start ======\n\n";

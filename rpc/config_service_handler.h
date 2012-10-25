@@ -3,6 +3,7 @@
 
 #include "../service_status.h"
 #include "rpc_handler.h"
+#include "proto/config_server.pb.h"
 namespace config_server
 {
 class ConfigServiceHandler:public service_engine::RpcHandler

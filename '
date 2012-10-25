@@ -8,38 +8,10 @@
 #include "db_mysql.h"
 #include "logger.h"
 
-struct InfoParser
-{
-	InfoParser(std::string& s):info(s),start(0),found(0){};
-	~InfoParser(){};
 
-	std::string pop()
-	{
-		if (found == string::npos)
-			return "";
-		start = found+1;
-		found = info.find(':',start);
-		if (found == string::npos)
-			return info.substr(start);
-		else
-			return info.substr(start,found-start);
-	};
-
-	size_t start;
-	size_t found;
-	std::string info;
-};
-
-int DbInfo::parse(const std::string& info)
+DbInfo::parse(const std::string& info)
 {
 
-	InfoParser infop(info);
-	addr = infop.pop();
-	port = infop.pop();
-	db = infop.pop();
-	user = infop.pop();
-	passwd = infop.pop();
-	return 0;
 }
 
 db_mysql::db_mysql() : m_bValid(false)

@@ -17,8 +17,12 @@
  
 struct DbInfo
 {
-	std::string db;
+
+	int parse(std::string& info);
+
 	std::string addr;
+	std::string port;
+	std::string db;
 	std::string user;
 	std::string passwd;
 };
@@ -31,13 +35,13 @@ public:
 	DBMysql();
 	virtual ~DBMysql();
 
-	bool Init(& info)
+	bool init(& info)
 	{
 		m_dbinfo=info;
 		return connect();
 	};
 
-	bool IsConnected() { return m_conn.connected();}
+	bool isConnected() { return m_conn.connected();}
 	
 	//获取数据库信息
 	void get_dbinfo(& info)
@@ -48,7 +52,7 @@ public:
 public:
 
 	//连接数据库
-	bool Connect();
+	bool connect();
 
 	/*
 	//获取服务默认配置
@@ -56,12 +60,12 @@ public:
 	*/
 
 	//获取配置
-	int GetInstanceConfig(uint32_t inst_id,std::string& data);
-	int GetServiceConfig(const std::string& svc,std::string& data);
+	//int GetInstanceConfig(uint32_t inst_id,std::string& data);
+	int getServiceConfig(const std::string& svc,std::string& data);
 
 	//保存配置
-	int SetInstanceConfig(uint32_t inst_id,const std::string& cfg);
-	int SetServiceConfig(const std::string& svc,const std::string& cfg);
+	//int SetInstanceConfig(uint32_t inst_id,const std::string& cfg);
+	int setServiceConfig(const std::string& svc,const std::string& cfg);
 
 	/*
 	//获取服务ID

@@ -1,8 +1,9 @@
 #include "json_man.h"
+#include "logger.h"
 
 
 
-bool json_man::set(const std::string& data)
+bool JsonMan::set(const std::string& data)
 {
 	Json::Reader reader;
 	return (m_ready = reader.parse(data.c_str(),m_root));
@@ -15,7 +16,7 @@ bool json_man::set(const std::string& data)
  * 	-2 check consistency failed
  * 	-3 unavailable new_data
  */
-int json_man::update(const std::string& path,const std::string& new_data,const std::string& old_data)
+int JsonMan::Update(const std::string& path,const std::string& new_data,const std::string& old_data)
 {
 	Json::Reader reader;
 	Json::Value sub_value = get(path);
@@ -45,21 +46,33 @@ int json_man::update(const std::string& path,const std::string& new_data,const s
 }
 
 
-Json::Value& json_man::get(const std::string& path)
+Json::Value& JsonMan::get(const std::string& path)
 {
 	Json::Path json_path(path);
 	return json_path.resolve(m_root);
 }
 
-void json_man::operator>>(std::string& jsonstr)
+void JsonMan::operator>>(std::string& jsonstr)
 {
 	Json::StyledWriter writer;
-	jsonstr = writer(write(m_root));
+	jsonstr = writer.write(m_root);
 }
 
 
-void json_man::operator<<(const std::string& jsonstr)
+void JsonMan::operator<<(const std::string& jsonstr)
 {
 	set(jsonstr);
 }
 
+int JsonMan::GetSub(const std::string& path,std::string& cfg)
+{
+	Json::Value v = get(path);
+	if (v.empty())
+	{
+		LOG(error)<<"cannot found path"<<ENDL;
+		return -1;
+	};
+	Json::StyledWriter writer;
+	cfg = writer.write(v);
+	return 0;
+}

@@ -25,7 +25,7 @@ class AtomicOperate
 
 public:
 
-int operate(KEY k,TASK& t)
+int Operate(KEY k,TASK& t)
 {
 	boost::shared_ptr<Operate> op;
 

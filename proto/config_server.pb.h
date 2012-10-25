@@ -36,7 +36,7 @@ class Status;
 class ConfigGetRequest;
 class ConfigGetResponse;
 class ConfigUpdateRequest;
-class CFG_NOTIFY_REQUEST;
+class ConfigNotifyRequest;
 class StatusRegisterRequest;
 class StatusRefreshRequest;
 class StatusQueryRequest;
@@ -509,16 +509,27 @@ class ConfigUpdateRequest : public ::google::protobuf::Message {
   inline ::std::string* mutable_path();
   inline ::std::string* release_path();
   
-  // required string config = 3;
-  inline bool has_config() const;
-  inline void clear_config();
-  static const int kConfigFieldNumber = 3;
-  inline const ::std::string& config() const;
-  inline void set_config(const ::std::string& value);
-  inline void set_config(const char* value);
-  inline void set_config(const char* value, size_t size);
-  inline ::std::string* mutable_config();
-  inline ::std::string* release_config();
+  // required string new_config = 3;
+  inline bool has_new_config() const;
+  inline void clear_new_config();
+  static const int kNewConfigFieldNumber = 3;
+  inline const ::std::string& new_config() const;
+  inline void set_new_config(const ::std::string& value);
+  inline void set_new_config(const char* value);
+  inline void set_new_config(const char* value, size_t size);
+  inline ::std::string* mutable_new_config();
+  inline ::std::string* release_new_config();
+  
+  // required string old_config = 4;
+  inline bool has_old_config() const;
+  inline void clear_old_config();
+  static const int kOldConfigFieldNumber = 4;
+  inline const ::std::string& old_config() const;
+  inline void set_old_config(const ::std::string& value);
+  inline void set_old_config(const char* value);
+  inline void set_old_config(const char* value, size_t size);
+  inline ::std::string* mutable_old_config();
+  inline ::std::string* release_old_config();
   
   // @@protoc_insertion_point(class_scope:config_server.ConfigUpdateRequest)
  private:
@@ -526,17 +537,20 @@ class ConfigUpdateRequest : public ::google::protobuf::Message {
   inline void clear_has_service_type();
   inline void set_has_path();
   inline void clear_has_path();
-  inline void set_has_config();
-  inline void clear_has_config();
+  inline void set_has_new_config();
+  inline void clear_has_new_config();
+  inline void set_has_old_config();
+  inline void clear_has_old_config();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::std::string* service_type_;
   ::std::string* path_;
-  ::std::string* config_;
+  ::std::string* new_config_;
+  ::std::string* old_config_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
   
   friend void  protobuf_AddDesc_config_5fserver_2eproto();
   friend void protobuf_AssignDesc_config_5fserver_2eproto();
@@ -547,14 +561,14 @@ class ConfigUpdateRequest : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class CFG_NOTIFY_REQUEST : public ::google::protobuf::Message {
+class ConfigNotifyRequest : public ::google::protobuf::Message {
  public:
-  CFG_NOTIFY_REQUEST();
-  virtual ~CFG_NOTIFY_REQUEST();
+  ConfigNotifyRequest();
+  virtual ~ConfigNotifyRequest();
   
-  CFG_NOTIFY_REQUEST(const CFG_NOTIFY_REQUEST& from);
+  ConfigNotifyRequest(const ConfigNotifyRequest& from);
   
-  inline CFG_NOTIFY_REQUEST& operator=(const CFG_NOTIFY_REQUEST& from) {
+  inline ConfigNotifyRequest& operator=(const ConfigNotifyRequest& from) {
     CopyFrom(from);
     return *this;
   }
@@ -568,17 +582,17 @@ class CFG_NOTIFY_REQUEST : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const CFG_NOTIFY_REQUEST& default_instance();
+  static const ConfigNotifyRequest& default_instance();
   
-  void Swap(CFG_NOTIFY_REQUEST* other);
+  void Swap(ConfigNotifyRequest* other);
   
   // implements Message ----------------------------------------------
   
-  CFG_NOTIFY_REQUEST* New() const;
+  ConfigNotifyRequest* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const CFG_NOTIFY_REQUEST& from);
-  void MergeFrom(const CFG_NOTIFY_REQUEST& from);
+  void CopyFrom(const ConfigNotifyRequest& from);
+  void MergeFrom(const ConfigNotifyRequest& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -623,7 +637,7 @@ class CFG_NOTIFY_REQUEST : public ::google::protobuf::Message {
   inline ::std::string* mutable_config();
   inline ::std::string* release_config();
   
-  // @@protoc_insertion_point(class_scope:config_server.CFG_NOTIFY_REQUEST)
+  // @@protoc_insertion_point(class_scope:config_server.ConfigNotifyRequest)
  private:
   inline void set_has_path();
   inline void clear_has_path();
@@ -643,7 +657,7 @@ class CFG_NOTIFY_REQUEST : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_config_5fserver_2eproto();
   
   void InitAsDefaultInstance();
-  static CFG_NOTIFY_REQUEST* default_instance_;
+  static ConfigNotifyRequest* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -1794,116 +1808,174 @@ inline ::std::string* ConfigUpdateRequest::release_path() {
   }
 }
 
-// required string config = 3;
-inline bool ConfigUpdateRequest::has_config() const {
+// required string new_config = 3;
+inline bool ConfigUpdateRequest::has_new_config() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void ConfigUpdateRequest::set_has_config() {
+inline void ConfigUpdateRequest::set_has_new_config() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void ConfigUpdateRequest::clear_has_config() {
+inline void ConfigUpdateRequest::clear_has_new_config() {
   _has_bits_[0] &= ~0x00000004u;
 }
-inline void ConfigUpdateRequest::clear_config() {
-  if (config_ != &::google::protobuf::internal::kEmptyString) {
-    config_->clear();
+inline void ConfigUpdateRequest::clear_new_config() {
+  if (new_config_ != &::google::protobuf::internal::kEmptyString) {
+    new_config_->clear();
   }
-  clear_has_config();
+  clear_has_new_config();
 }
-inline const ::std::string& ConfigUpdateRequest::config() const {
-  return *config_;
+inline const ::std::string& ConfigUpdateRequest::new_config() const {
+  return *new_config_;
 }
-inline void ConfigUpdateRequest::set_config(const ::std::string& value) {
-  set_has_config();
-  if (config_ == &::google::protobuf::internal::kEmptyString) {
-    config_ = new ::std::string;
+inline void ConfigUpdateRequest::set_new_config(const ::std::string& value) {
+  set_has_new_config();
+  if (new_config_ == &::google::protobuf::internal::kEmptyString) {
+    new_config_ = new ::std::string;
   }
-  config_->assign(value);
+  new_config_->assign(value);
 }
-inline void ConfigUpdateRequest::set_config(const char* value) {
-  set_has_config();
-  if (config_ == &::google::protobuf::internal::kEmptyString) {
-    config_ = new ::std::string;
+inline void ConfigUpdateRequest::set_new_config(const char* value) {
+  set_has_new_config();
+  if (new_config_ == &::google::protobuf::internal::kEmptyString) {
+    new_config_ = new ::std::string;
   }
-  config_->assign(value);
+  new_config_->assign(value);
 }
-inline void ConfigUpdateRequest::set_config(const char* value, size_t size) {
-  set_has_config();
-  if (config_ == &::google::protobuf::internal::kEmptyString) {
-    config_ = new ::std::string;
+inline void ConfigUpdateRequest::set_new_config(const char* value, size_t size) {
+  set_has_new_config();
+  if (new_config_ == &::google::protobuf::internal::kEmptyString) {
+    new_config_ = new ::std::string;
   }
-  config_->assign(reinterpret_cast<const char*>(value), size);
+  new_config_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* ConfigUpdateRequest::mutable_config() {
-  set_has_config();
-  if (config_ == &::google::protobuf::internal::kEmptyString) {
-    config_ = new ::std::string;
+inline ::std::string* ConfigUpdateRequest::mutable_new_config() {
+  set_has_new_config();
+  if (new_config_ == &::google::protobuf::internal::kEmptyString) {
+    new_config_ = new ::std::string;
   }
-  return config_;
+  return new_config_;
 }
-inline ::std::string* ConfigUpdateRequest::release_config() {
-  clear_has_config();
-  if (config_ == &::google::protobuf::internal::kEmptyString) {
+inline ::std::string* ConfigUpdateRequest::release_new_config() {
+  clear_has_new_config();
+  if (new_config_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
   } else {
-    ::std::string* temp = config_;
-    config_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    ::std::string* temp = new_config_;
+    new_config_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string old_config = 4;
+inline bool ConfigUpdateRequest::has_old_config() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void ConfigUpdateRequest::set_has_old_config() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void ConfigUpdateRequest::clear_has_old_config() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void ConfigUpdateRequest::clear_old_config() {
+  if (old_config_ != &::google::protobuf::internal::kEmptyString) {
+    old_config_->clear();
+  }
+  clear_has_old_config();
+}
+inline const ::std::string& ConfigUpdateRequest::old_config() const {
+  return *old_config_;
+}
+inline void ConfigUpdateRequest::set_old_config(const ::std::string& value) {
+  set_has_old_config();
+  if (old_config_ == &::google::protobuf::internal::kEmptyString) {
+    old_config_ = new ::std::string;
+  }
+  old_config_->assign(value);
+}
+inline void ConfigUpdateRequest::set_old_config(const char* value) {
+  set_has_old_config();
+  if (old_config_ == &::google::protobuf::internal::kEmptyString) {
+    old_config_ = new ::std::string;
+  }
+  old_config_->assign(value);
+}
+inline void ConfigUpdateRequest::set_old_config(const char* value, size_t size) {
+  set_has_old_config();
+  if (old_config_ == &::google::protobuf::internal::kEmptyString) {
+    old_config_ = new ::std::string;
+  }
+  old_config_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ConfigUpdateRequest::mutable_old_config() {
+  set_has_old_config();
+  if (old_config_ == &::google::protobuf::internal::kEmptyString) {
+    old_config_ = new ::std::string;
+  }
+  return old_config_;
+}
+inline ::std::string* ConfigUpdateRequest::release_old_config() {
+  clear_has_old_config();
+  if (old_config_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = old_config_;
+    old_config_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
 }
 
 // -------------------------------------------------------------------
 
-// CFG_NOTIFY_REQUEST
+// ConfigNotifyRequest
 
 // required string path = 1;
-inline bool CFG_NOTIFY_REQUEST::has_path() const {
+inline bool ConfigNotifyRequest::has_path() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void CFG_NOTIFY_REQUEST::set_has_path() {
+inline void ConfigNotifyRequest::set_has_path() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void CFG_NOTIFY_REQUEST::clear_has_path() {
+inline void ConfigNotifyRequest::clear_has_path() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void CFG_NOTIFY_REQUEST::clear_path() {
+inline void ConfigNotifyRequest::clear_path() {
   if (path_ != &::google::protobuf::internal::kEmptyString) {
     path_->clear();
   }
   clear_has_path();
 }
-inline const ::std::string& CFG_NOTIFY_REQUEST::path() const {
+inline const ::std::string& ConfigNotifyRequest::path() const {
   return *path_;
 }
-inline void CFG_NOTIFY_REQUEST::set_path(const ::std::string& value) {
+inline void ConfigNotifyRequest::set_path(const ::std::string& value) {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   path_->assign(value);
 }
-inline void CFG_NOTIFY_REQUEST::set_path(const char* value) {
+inline void ConfigNotifyRequest::set_path(const char* value) {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   path_->assign(value);
 }
-inline void CFG_NOTIFY_REQUEST::set_path(const char* value, size_t size) {
+inline void ConfigNotifyRequest::set_path(const char* value, size_t size) {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   path_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* CFG_NOTIFY_REQUEST::mutable_path() {
+inline ::std::string* ConfigNotifyRequest::mutable_path() {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   return path_;
 }
-inline ::std::string* CFG_NOTIFY_REQUEST::release_path() {
+inline ::std::string* ConfigNotifyRequest::release_path() {
   clear_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -1915,53 +1987,53 @@ inline ::std::string* CFG_NOTIFY_REQUEST::release_path() {
 }
 
 // required string config = 2;
-inline bool CFG_NOTIFY_REQUEST::has_config() const {
+inline bool ConfigNotifyRequest::has_config() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void CFG_NOTIFY_REQUEST::set_has_config() {
+inline void ConfigNotifyRequest::set_has_config() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void CFG_NOTIFY_REQUEST::clear_has_config() {
+inline void ConfigNotifyRequest::clear_has_config() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void CFG_NOTIFY_REQUEST::clear_config() {
+inline void ConfigNotifyRequest::clear_config() {
   if (config_ != &::google::protobuf::internal::kEmptyString) {
     config_->clear();
   }
   clear_has_config();
 }
-inline const ::std::string& CFG_NOTIFY_REQUEST::config() const {
+inline const ::std::string& ConfigNotifyRequest::config() const {
   return *config_;
 }
-inline void CFG_NOTIFY_REQUEST::set_config(const ::std::string& value) {
+inline void ConfigNotifyRequest::set_config(const ::std::string& value) {
   set_has_config();
   if (config_ == &::google::protobuf::internal::kEmptyString) {
     config_ = new ::std::string;
   }
   config_->assign(value);
 }
-inline void CFG_NOTIFY_REQUEST::set_config(const char* value) {
+inline void ConfigNotifyRequest::set_config(const char* value) {
   set_has_config();
   if (config_ == &::google::protobuf::internal::kEmptyString) {
     config_ = new ::std::string;
   }
   config_->assign(value);
 }
-inline void CFG_NOTIFY_REQUEST::set_config(const char* value, size_t size) {
+inline void ConfigNotifyRequest::set_config(const char* value, size_t size) {
   set_has_config();
   if (config_ == &::google::protobuf::internal::kEmptyString) {
     config_ = new ::std::string;
   }
   config_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* CFG_NOTIFY_REQUEST::mutable_config() {
+inline ::std::string* ConfigNotifyRequest::mutable_config() {
   set_has_config();
   if (config_ == &::google::protobuf::internal::kEmptyString) {
     config_ = new ::std::string;
   }
   return config_;
 }
-inline ::std::string* CFG_NOTIFY_REQUEST::release_config() {
+inline ::std::string* ConfigNotifyRequest::release_config() {
   clear_has_config();
   if (config_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;

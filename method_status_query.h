@@ -8,6 +8,14 @@
 
 namespace config_server{
 
+
+struct StatusQueryTask:public IterateF
+{
+	~StatusQueryTask();
+	virtual doit(ServiceInstance& si);
+	std::vector<Status*> status_list;
+};
+
 class MethodStatusQuery: public MethodConfigServerBase<StatusQuery>
 {
 public:

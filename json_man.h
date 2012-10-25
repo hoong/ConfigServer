@@ -5,13 +5,13 @@
 #include "json/json.h"
 
 
-class json_man
+class JsonMan
 {
 public:
-	json_man():m_ready(false){};
-	~json_man(){};
+	JsonMan():m_ready(false){};
+	~JsonMan(){};
 
-	bool is_avail()
+	bool IsAvail()
 	{
 		return m_ready;
 	}
@@ -39,7 +39,14 @@ public:
  * 	-2 check consistency failed
  * 	-3 unavailable new_data
  */
-	int update(const std::string& path,const std::string& new_data,const std::string& old_data);
+	int Update(const std::string& path,const std::string& new_data,const std::string& old_data);
+/*
+ * return:
+ * 	0 success
+ * 	-1 path not found
+ */
+	int GetSub(const std::string& path,std::string& cfg);
+	
 private:
 	Json::Value& get(const std::string& path);
 

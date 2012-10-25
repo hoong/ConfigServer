@@ -3,6 +3,7 @@
 #include "atomic_operate.h"
 #include "base/singleton.h"
 #include "base/net/handler.h"
+#include "rpc/config_server_handler.h"
 #include <boost/thread/thread.hpp>
 #include <boost/thread/mutex.hpp>
 #include <string.h>
@@ -32,21 +33,21 @@ private:
 	std::string old_config;
 };
 
-typedef base::Singleton<AtomicOperate<std::string,ServiceConfigUpdate> > ConfigUpdate;
+typedef base::Singleton<AtomicOperate<std::string,ServiceConfigUpdate> > ConfigUpdateOperate;
 
 
 class ServiceInstances
 {
 public:
-	typedef std::map<std::string,boost::shared_ptr<base::net::handler> > PoolType;
+	typedef std::map<std::string,boost::shared_ptr<ConfigServiceHandler> > PoolType;
 	typedef PoolType::iterator IteratorType;
-	typedef std::pair<std::string,boost::shared_ptr<base::net::handler> > ValueType;
+	typedef std::pair<std::string,boost::shared_ptr<ConfigServiceHandler> > ValueType;
 	typedef std::pair<ValueType,bool> ReturnType;
 
-	int Insert(const std::string& addr,boost::shared_ptr<base::net::handler> ptr);
+	int Insert(const std::string& addr,boost::shared_ptr<ConfigServiceHandler> ptr);
 	int Remove(const std::string& addr);
 	int GetService(std::string& addr);
-	int GetAll(std::vector<std::string>& status_list);
+	int GetAll(std::vector<Status*>& status_list);
 	int Notify(const std::string& path,const std::string& cfg);
 private:
 	PoolType m_handler_pool;
@@ -56,7 +57,7 @@ private:
 struct IterateF
 {
 	virtual ~IterateF(){};
-	virtual doit(service_instance&) =0;
+	virtual void doit(ServiceInstance&) =0;
 };
 
 class ServiceManager

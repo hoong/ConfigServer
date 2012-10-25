@@ -11,6 +11,11 @@ ConfigServiceHandler::ConfigServiceHandler(boost::shared_ptr<RpcStubsDispatcher>
 {
 }
 
+int ConfigServiceHandler::Notify(std::string path,std::string sub_config)
+{
+
+}
+
 ConfigServiceHandlerCreatorStrategy::ConfigServiceHandlerCreatorStrategy(RpcStubsManager* stubman):
 	RpcHandlerCreatorStrategy(stubman)
 {

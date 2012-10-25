@@ -29,9 +29,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* ConfigUpdateRequest_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ConfigUpdateRequest_reflection_ = NULL;
-const ::google::protobuf::Descriptor* CFG_NOTIFY_REQUEST_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* ConfigNotifyRequest_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  CFG_NOTIFY_REQUEST_reflection_ = NULL;
+  ConfigNotifyRequest_reflection_ = NULL;
 const ::google::protobuf::Descriptor* StatusRegisterRequest_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   StatusRegisterRequest_reflection_ = NULL;
@@ -118,10 +118,11 @@ void protobuf_AssignDesc_config_5fserver_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ConfigGetResponse));
   ConfigUpdateRequest_descriptor_ = file->message_type(3);
-  static const int ConfigUpdateRequest_offsets_[3] = {
+  static const int ConfigUpdateRequest_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConfigUpdateRequest, service_type_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConfigUpdateRequest, path_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConfigUpdateRequest, config_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConfigUpdateRequest, new_config_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConfigUpdateRequest, old_config_),
   };
   ConfigUpdateRequest_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -134,22 +135,22 @@ void protobuf_AssignDesc_config_5fserver_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ConfigUpdateRequest));
-  CFG_NOTIFY_REQUEST_descriptor_ = file->message_type(4);
-  static const int CFG_NOTIFY_REQUEST_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CFG_NOTIFY_REQUEST, path_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CFG_NOTIFY_REQUEST, config_),
+  ConfigNotifyRequest_descriptor_ = file->message_type(4);
+  static const int ConfigNotifyRequest_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConfigNotifyRequest, path_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConfigNotifyRequest, config_),
   };
-  CFG_NOTIFY_REQUEST_reflection_ =
+  ConfigNotifyRequest_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      CFG_NOTIFY_REQUEST_descriptor_,
-      CFG_NOTIFY_REQUEST::default_instance_,
-      CFG_NOTIFY_REQUEST_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CFG_NOTIFY_REQUEST, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CFG_NOTIFY_REQUEST, _unknown_fields_),
+      ConfigNotifyRequest_descriptor_,
+      ConfigNotifyRequest::default_instance_,
+      ConfigNotifyRequest_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConfigNotifyRequest, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConfigNotifyRequest, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(CFG_NOTIFY_REQUEST));
+      sizeof(ConfigNotifyRequest));
   StatusRegisterRequest_descriptor_ = file->message_type(5);
   static const int StatusRegisterRequest_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StatusRegisterRequest, status_),
@@ -277,7 +278,7 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     ConfigUpdateRequest_descriptor_, &ConfigUpdateRequest::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    CFG_NOTIFY_REQUEST_descriptor_, &CFG_NOTIFY_REQUEST::default_instance());
+    ConfigNotifyRequest_descriptor_, &ConfigNotifyRequest::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     StatusRegisterRequest_descriptor_, &StatusRegisterRequest::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
@@ -305,8 +306,8 @@ void protobuf_ShutdownFile_config_5fserver_2eproto() {
   delete ConfigGetResponse_reflection_;
   delete ConfigUpdateRequest::default_instance_;
   delete ConfigUpdateRequest_reflection_;
-  delete CFG_NOTIFY_REQUEST::default_instance_;
-  delete CFG_NOTIFY_REQUEST_reflection_;
+  delete ConfigNotifyRequest::default_instance_;
+  delete ConfigNotifyRequest_reflection_;
   delete StatusRegisterRequest::default_instance_;
   delete StatusRegisterRequest_reflection_;
   delete StatusRefreshRequest::default_instance_;
@@ -337,45 +338,46 @@ void protobuf_AddDesc_config_5fserver_2eproto() {
     "(\t\022\014\n\004load\030\005 \001(\r\022\016\n\006status\030\006 \001(\r\022\025\n\rlast"
     "_activity\030\007 \001(\r\"9\n\020ConfigGetRequest\022\024\n\014s"
     "ervice_type\030\001 \002(\t\022\017\n\004path\030\002 \001(\t:\001.\"#\n\021Co"
-    "nfigGetResponse\022\016\n\006config\030\001 \002(\t\"I\n\023Confi"
+    "nfigGetResponse\022\016\n\006config\030\001 \002(\t\"a\n\023Confi"
     "gUpdateRequest\022\024\n\014service_type\030\001 \002(\t\022\014\n\004"
-    "path\030\002 \002(\t\022\016\n\006config\030\003 \002(\t\"2\n\022CFG_NOTIFY"
-    "_REQUEST\022\014\n\004path\030\001 \002(\t\022\016\n\006config\030\002 \002(\t\">"
-    "\n\025StatusRegisterRequest\022%\n\006status\030\001 \002(\0132"
-    "\025.config_server.Status\"=\n\024StatusRefreshR"
-    "equest\022%\n\006status\030\001 \002(\0132\025.config_server.S"
-    "tatus\"\024\n\022StatusQueryRequest\"<\n\023StatusQue"
-    "ryResponse\022%\n\006status\030\001 \003(\0132\025.config_serv"
-    "er.Status\",\n\024ServerAcquireRequest\022\024\n\014ser"
-    "vice_type\030\001 \002(\t\",\n\025ServerAcquireResponse"
-    "\022\023\n\013server_addr\030\001 \002(\t\"\036\n\016CommonResponse\022"
-    "\014\n\004code\030\001 \002(\r*\260\001\n\006CmdIDs\022\023\n\017CmdID_Config"
-    "Get\020\001\022\026\n\022CmdID_ConfigUpdate\020\002\022\026\n\022CmdID_C"
-    "onfigNotify\020\003\022\030\n\024CmdID_StatusRegister\020\004\022"
-    "\027\n\023CmdID_StatusRefresh\020\005\022\025\n\021CmdID_Status"
-    "Query\020\006\022\027\n\023CmdID_ServerAcquire\020\007*B\n\013Netw"
-    "orkType\022\017\n\013NET_UNKNOWN\020\001\022\n\n\006NET_CT\020\002\022\n\n\006"
-    "NET_CN\020\003\022\n\n\006NET_CM\020\0042\220\004\n\rConfigService\022N"
-    "\n\tConfigGet\022\037.config_server.ConfigGetReq"
-    "uest\032 .config_server.ConfigGetResponse\022Q"
-    "\n\014ConfigUpdate\022\".config_server.ConfigUpd"
-    "ateRequest\032\035.config_server.CommonRespons"
-    "e\022U\n\016StatusRegister\022$.config_server.Stat"
-    "usRegisterRequest\032\035.config_server.Common"
-    "Response\022S\n\rStatusRefresh\022#.config_serve"
-    "r.StatusRefreshRequest\032\035.config_server.C"
-    "ommonResponse\022T\n\013StatusQuery\022!.config_se"
-    "rver.StatusQueryRequest\032\".config_server."
-    "StatusQueryResponse\022Z\n\rServerAcquire\022#.c"
-    "onfig_server.ServerAcquireRequest\032$.conf"
-    "ig_server.ServerAcquireResponse", 1551);
+    "path\030\002 \002(\t\022\022\n\nnew_config\030\003 \002(\t\022\022\n\nold_co"
+    "nfig\030\004 \002(\t\"3\n\023ConfigNotifyRequest\022\014\n\004pat"
+    "h\030\001 \002(\t\022\016\n\006config\030\002 \002(\t\">\n\025StatusRegiste"
+    "rRequest\022%\n\006status\030\001 \002(\0132\025.config_server"
+    ".Status\"=\n\024StatusRefreshRequest\022%\n\006statu"
+    "s\030\001 \002(\0132\025.config_server.Status\"\024\n\022Status"
+    "QueryRequest\"<\n\023StatusQueryResponse\022%\n\006s"
+    "tatus\030\001 \003(\0132\025.config_server.Status\",\n\024Se"
+    "rverAcquireRequest\022\024\n\014service_type\030\001 \002(\t"
+    "\",\n\025ServerAcquireResponse\022\023\n\013server_addr"
+    "\030\001 \002(\t\"\036\n\016CommonResponse\022\014\n\004code\030\001 \002(\r*\260"
+    "\001\n\006CmdIDs\022\023\n\017CmdID_ConfigGet\020\001\022\026\n\022CmdID_"
+    "ConfigUpdate\020\002\022\026\n\022CmdID_ConfigNotify\020\003\022\030"
+    "\n\024CmdID_StatusRegister\020\004\022\027\n\023CmdID_Status"
+    "Refresh\020\005\022\025\n\021CmdID_StatusQuery\020\006\022\027\n\023CmdI"
+    "D_ServerAcquire\020\007*B\n\013NetworkType\022\017\n\013NET_"
+    "UNKNOWN\020\001\022\n\n\006NET_CT\020\002\022\n\n\006NET_CN\020\003\022\n\n\006NET"
+    "_CM\020\0042\220\004\n\rConfigService\022N\n\tConfigGet\022\037.c"
+    "onfig_server.ConfigGetRequest\032 .config_s"
+    "erver.ConfigGetResponse\022Q\n\014ConfigUpdate\022"
+    "\".config_server.ConfigUpdateRequest\032\035.co"
+    "nfig_server.CommonResponse\022U\n\016StatusRegi"
+    "ster\022$.config_server.StatusRegisterReque"
+    "st\032\035.config_server.CommonResponse\022S\n\rSta"
+    "tusRefresh\022#.config_server.StatusRefresh"
+    "Request\032\035.config_server.CommonResponse\022T"
+    "\n\013StatusQuery\022!.config_server.StatusQuer"
+    "yRequest\032\".config_server.StatusQueryResp"
+    "onse\022Z\n\rServerAcquire\022#.config_server.Se"
+    "rverAcquireRequest\032$.config_server.Serve"
+    "rAcquireResponse", 1576);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "config_server.proto", &protobuf_RegisterTypes);
   Status::default_instance_ = new Status();
   ConfigGetRequest::default_instance_ = new ConfigGetRequest();
   ConfigGetResponse::default_instance_ = new ConfigGetResponse();
   ConfigUpdateRequest::default_instance_ = new ConfigUpdateRequest();
-  CFG_NOTIFY_REQUEST::default_instance_ = new CFG_NOTIFY_REQUEST();
+  ConfigNotifyRequest::default_instance_ = new ConfigNotifyRequest();
   StatusRegisterRequest::default_instance_ = new StatusRegisterRequest();
   StatusRefreshRequest::default_instance_ = new StatusRefreshRequest();
   StatusQueryRequest::default_instance_ = new StatusQueryRequest();
@@ -387,7 +389,7 @@ void protobuf_AddDesc_config_5fserver_2eproto() {
   ConfigGetRequest::default_instance_->InitAsDefaultInstance();
   ConfigGetResponse::default_instance_->InitAsDefaultInstance();
   ConfigUpdateRequest::default_instance_->InitAsDefaultInstance();
-  CFG_NOTIFY_REQUEST::default_instance_->InitAsDefaultInstance();
+  ConfigNotifyRequest::default_instance_->InitAsDefaultInstance();
   StatusRegisterRequest::default_instance_->InitAsDefaultInstance();
   StatusRefreshRequest::default_instance_->InitAsDefaultInstance();
   StatusQueryRequest::default_instance_->InitAsDefaultInstance();
@@ -1459,7 +1461,8 @@ void ConfigGetResponse::Swap(ConfigGetResponse* other) {
 #ifndef _MSC_VER
 const int ConfigUpdateRequest::kServiceTypeFieldNumber;
 const int ConfigUpdateRequest::kPathFieldNumber;
-const int ConfigUpdateRequest::kConfigFieldNumber;
+const int ConfigUpdateRequest::kNewConfigFieldNumber;
+const int ConfigUpdateRequest::kOldConfigFieldNumber;
 #endif  // !_MSC_VER
 
 ConfigUpdateRequest::ConfigUpdateRequest()
@@ -1480,7 +1483,8 @@ void ConfigUpdateRequest::SharedCtor() {
   _cached_size_ = 0;
   service_type_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  config_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  new_config_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  old_config_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1495,8 +1499,11 @@ void ConfigUpdateRequest::SharedDtor() {
   if (path_ != &::google::protobuf::internal::kEmptyString) {
     delete path_;
   }
-  if (config_ != &::google::protobuf::internal::kEmptyString) {
-    delete config_;
+  if (new_config_ != &::google::protobuf::internal::kEmptyString) {
+    delete new_config_;
+  }
+  if (old_config_ != &::google::protobuf::internal::kEmptyString) {
+    delete old_config_;
   }
   if (this != default_instance_) {
   }
@@ -1534,9 +1541,14 @@ void ConfigUpdateRequest::Clear() {
         path_->clear();
       }
     }
-    if (has_config()) {
-      if (config_ != &::google::protobuf::internal::kEmptyString) {
-        config_->clear();
+    if (has_new_config()) {
+      if (new_config_ != &::google::protobuf::internal::kEmptyString) {
+        new_config_->clear();
+      }
+    }
+    if (has_old_config()) {
+      if (old_config_ != &::google::protobuf::internal::kEmptyString) {
+        old_config_->clear();
       }
     }
   }
@@ -1579,19 +1591,36 @@ bool ConfigUpdateRequest::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(26)) goto parse_config;
+        if (input->ExpectTag(26)) goto parse_new_config;
         break;
       }
       
-      // required string config = 3;
+      // required string new_config = 3;
       case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_config:
+         parse_new_config:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_config()));
+                input, this->mutable_new_config()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->config().data(), this->config().length(),
+            this->new_config().data(), this->new_config().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(34)) goto parse_old_config;
+        break;
+      }
+      
+      // required string old_config = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_old_config:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_old_config()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->old_config().data(), this->old_config().length(),
             ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
@@ -1636,13 +1665,22 @@ void ConfigUpdateRequest::SerializeWithCachedSizes(
       2, this->path(), output);
   }
   
-  // required string config = 3;
-  if (has_config()) {
+  // required string new_config = 3;
+  if (has_new_config()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->config().data(), this->config().length(),
+      this->new_config().data(), this->new_config().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      3, this->config(), output);
+      3, this->new_config(), output);
+  }
+  
+  // required string old_config = 4;
+  if (has_old_config()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->old_config().data(), this->old_config().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      4, this->old_config(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -1673,14 +1711,24 @@ void ConfigUpdateRequest::SerializeWithCachedSizes(
         2, this->path(), target);
   }
   
-  // required string config = 3;
-  if (has_config()) {
+  // required string new_config = 3;
+  if (has_new_config()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->config().data(), this->config().length(),
+      this->new_config().data(), this->new_config().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->config(), target);
+        3, this->new_config(), target);
+  }
+  
+  // required string old_config = 4;
+  if (has_old_config()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->old_config().data(), this->old_config().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->old_config(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -1708,11 +1756,18 @@ int ConfigUpdateRequest::ByteSize() const {
           this->path());
     }
     
-    // required string config = 3;
-    if (has_config()) {
+    // required string new_config = 3;
+    if (has_new_config()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->config());
+          this->new_config());
+    }
+    
+    // required string old_config = 4;
+    if (has_old_config()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->old_config());
     }
     
   }
@@ -1748,8 +1803,11 @@ void ConfigUpdateRequest::MergeFrom(const ConfigUpdateRequest& from) {
     if (from.has_path()) {
       set_path(from.path());
     }
-    if (from.has_config()) {
-      set_config(from.config());
+    if (from.has_new_config()) {
+      set_new_config(from.new_config());
+    }
+    if (from.has_old_config()) {
+      set_old_config(from.old_config());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -1768,7 +1826,7 @@ void ConfigUpdateRequest::CopyFrom(const ConfigUpdateRequest& from) {
 }
 
 bool ConfigUpdateRequest::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
+  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
   
   return true;
 }
@@ -1777,7 +1835,8 @@ void ConfigUpdateRequest::Swap(ConfigUpdateRequest* other) {
   if (other != this) {
     std::swap(service_type_, other->service_type_);
     std::swap(path_, other->path_);
-    std::swap(config_, other->config_);
+    std::swap(new_config_, other->new_config_);
+    std::swap(old_config_, other->old_config_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -1796,36 +1855,36 @@ void ConfigUpdateRequest::Swap(ConfigUpdateRequest* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int CFG_NOTIFY_REQUEST::kPathFieldNumber;
-const int CFG_NOTIFY_REQUEST::kConfigFieldNumber;
+const int ConfigNotifyRequest::kPathFieldNumber;
+const int ConfigNotifyRequest::kConfigFieldNumber;
 #endif  // !_MSC_VER
 
-CFG_NOTIFY_REQUEST::CFG_NOTIFY_REQUEST()
+ConfigNotifyRequest::ConfigNotifyRequest()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void CFG_NOTIFY_REQUEST::InitAsDefaultInstance() {
+void ConfigNotifyRequest::InitAsDefaultInstance() {
 }
 
-CFG_NOTIFY_REQUEST::CFG_NOTIFY_REQUEST(const CFG_NOTIFY_REQUEST& from)
+ConfigNotifyRequest::ConfigNotifyRequest(const ConfigNotifyRequest& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void CFG_NOTIFY_REQUEST::SharedCtor() {
+void ConfigNotifyRequest::SharedCtor() {
   _cached_size_ = 0;
   path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   config_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-CFG_NOTIFY_REQUEST::~CFG_NOTIFY_REQUEST() {
+ConfigNotifyRequest::~ConfigNotifyRequest() {
   SharedDtor();
 }
 
-void CFG_NOTIFY_REQUEST::SharedDtor() {
+void ConfigNotifyRequest::SharedDtor() {
   if (path_ != &::google::protobuf::internal::kEmptyString) {
     delete path_;
   }
@@ -1836,27 +1895,27 @@ void CFG_NOTIFY_REQUEST::SharedDtor() {
   }
 }
 
-void CFG_NOTIFY_REQUEST::SetCachedSize(int size) const {
+void ConfigNotifyRequest::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* CFG_NOTIFY_REQUEST::descriptor() {
+const ::google::protobuf::Descriptor* ConfigNotifyRequest::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return CFG_NOTIFY_REQUEST_descriptor_;
+  return ConfigNotifyRequest_descriptor_;
 }
 
-const CFG_NOTIFY_REQUEST& CFG_NOTIFY_REQUEST::default_instance() {
+const ConfigNotifyRequest& ConfigNotifyRequest::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_config_5fserver_2eproto();  return *default_instance_;
 }
 
-CFG_NOTIFY_REQUEST* CFG_NOTIFY_REQUEST::default_instance_ = NULL;
+ConfigNotifyRequest* ConfigNotifyRequest::default_instance_ = NULL;
 
-CFG_NOTIFY_REQUEST* CFG_NOTIFY_REQUEST::New() const {
-  return new CFG_NOTIFY_REQUEST;
+ConfigNotifyRequest* ConfigNotifyRequest::New() const {
+  return new ConfigNotifyRequest;
 }
 
-void CFG_NOTIFY_REQUEST::Clear() {
+void ConfigNotifyRequest::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (has_path()) {
       if (path_ != &::google::protobuf::internal::kEmptyString) {
@@ -1873,7 +1932,7 @@ void CFG_NOTIFY_REQUEST::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool CFG_NOTIFY_REQUEST::MergePartialFromCodedStream(
+bool ConfigNotifyRequest::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
@@ -1928,7 +1987,7 @@ bool CFG_NOTIFY_REQUEST::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void CFG_NOTIFY_REQUEST::SerializeWithCachedSizes(
+void ConfigNotifyRequest::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // required string path = 1;
   if (has_path()) {
@@ -1954,7 +2013,7 @@ void CFG_NOTIFY_REQUEST::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* CFG_NOTIFY_REQUEST::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* ConfigNotifyRequest::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // required string path = 1;
   if (has_path()) {
@@ -1983,7 +2042,7 @@ void CFG_NOTIFY_REQUEST::SerializeWithCachedSizes(
   return target;
 }
 
-int CFG_NOTIFY_REQUEST::ByteSize() const {
+int ConfigNotifyRequest::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
@@ -2013,10 +2072,10 @@ int CFG_NOTIFY_REQUEST::ByteSize() const {
   return total_size;
 }
 
-void CFG_NOTIFY_REQUEST::MergeFrom(const ::google::protobuf::Message& from) {
+void ConfigNotifyRequest::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const CFG_NOTIFY_REQUEST* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const CFG_NOTIFY_REQUEST*>(
+  const ConfigNotifyRequest* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const ConfigNotifyRequest*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -2025,7 +2084,7 @@ void CFG_NOTIFY_REQUEST::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void CFG_NOTIFY_REQUEST::MergeFrom(const CFG_NOTIFY_REQUEST& from) {
+void ConfigNotifyRequest::MergeFrom(const ConfigNotifyRequest& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_path()) {
@@ -2038,25 +2097,25 @@ void CFG_NOTIFY_REQUEST::MergeFrom(const CFG_NOTIFY_REQUEST& from) {
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void CFG_NOTIFY_REQUEST::CopyFrom(const ::google::protobuf::Message& from) {
+void ConfigNotifyRequest::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void CFG_NOTIFY_REQUEST::CopyFrom(const CFG_NOTIFY_REQUEST& from) {
+void ConfigNotifyRequest::CopyFrom(const ConfigNotifyRequest& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool CFG_NOTIFY_REQUEST::IsInitialized() const {
+bool ConfigNotifyRequest::IsInitialized() const {
   if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
   
   return true;
 }
 
-void CFG_NOTIFY_REQUEST::Swap(CFG_NOTIFY_REQUEST* other) {
+void ConfigNotifyRequest::Swap(ConfigNotifyRequest* other) {
   if (other != this) {
     std::swap(path_, other->path_);
     std::swap(config_, other->config_);
@@ -2066,11 +2125,11 @@ void CFG_NOTIFY_REQUEST::Swap(CFG_NOTIFY_REQUEST* other) {
   }
 }
 
-::google::protobuf::Metadata CFG_NOTIFY_REQUEST::GetMetadata() const {
+::google::protobuf::Metadata ConfigNotifyRequest::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = CFG_NOTIFY_REQUEST_descriptor_;
-  metadata.reflection = CFG_NOTIFY_REQUEST_reflection_;
+  metadata.descriptor = ConfigNotifyRequest_descriptor_;
+  metadata.reflection = ConfigNotifyRequest_reflection_;
   return metadata;
 }
 

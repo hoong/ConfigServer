@@ -1,6 +1,6 @@
 #include "service_config.h"
 #include "db_mysql.h"
-#include "json_man.h"
+#include "JsonMan.h"
 
 #define DBMGR MySqlMgr
 
@@ -11,15 +11,15 @@ int ServiceConfigUpdate::run()
 	std::string cfg ; 
 	DBMGR.GetServiceConfig(service_type,cfg);
 
-	json_man jm;
+	JsonMan jm;
 	jm<<cfg;
-	if (!jm.is_avail())
+	if (!jm.IsAvail())
 	{
 		return 2;
 	}
 
 	int ret;
-	if (0 !=(ret =jm.update(path,new_config,old_config)))
+	if (0 !=(ret =jm.Update(path,new_config,old_config)))
 	{
 		LOG(error)<<"update failed"<<ENDL;
 		if (-2 == ret)
@@ -59,7 +59,7 @@ void ServiceManager::Iterate(IterateF* iterate_function)
 		iterate_function->doit(*it);
 };
 
-int ServiceInstances::Insert(const std::string& addr,boost::shared_ptr<base::net::handler> ptr)
+int ServiceInstances::Insert(const std::string& addr,boost::shared_ptr<ConfigServiceHandler> ptr)
 {
 	boost::scoped_lock lock(m_mutex);
 	ReturnType ret = m_handler_pool.insert(VALUE_TYPE (addr,ptr));
@@ -89,37 +89,36 @@ int ServiceInstances::GetAddr(std::string& addr)
 	uint32_t now = time(NULL);
 	for(it = m_handler_pool.begin();it!=m_handler_pool.end();++it)
 	{
-		STATUS& status = it->second->status();
+		Status& status = it->second->status();
 
-		if (status.last_activity - now >DEADTIME)
+		if (status.last_activity() - now >DEADTIME)
 		{
 			status.status = 1;
 			continue;
 		};
 
-		if (status.load < lowest)
+		if (status.load() < lowest)
 		{
-			lowest = status.load;
+			lowest = status.load();
 			server_addr = it->first;
 		}
 	};
 
-	if (lowest == 0xFFFFU)
+	if (lowest == 0xFFFFFFFFUL)
 		return -1;
 	else
 		return 0;
 
 };
 
-int ServiceInstances::GetAll(std::vector<std::string>& status_list)
+int ServiceInstances::GetAll(std::vector<Status*>& status_list)
 {
 	IT_TYPE it ;
 	for(it = m_handler_pool.begin();it!=m_handler_pool.end();++it)
 	{
-		std::string info;
-		STATUS& status = it->second->status();
-		status>>info;
-		status_list.push_back(info);
+		//std::string info;
+		//Status& status = it->second->status();
+		status_list.push_back(&(it->second->status()));
 	};
 
 	return 0;
@@ -131,7 +130,7 @@ int ServiceInstances::Notify(const std::string& path,const std::string& cfg)
 	IT_TYPE it ;
 	for(it = m_handler_pool.begin();it!=m_handler_pool.end();++it)
 	{
-		if (status.last_activity - now >DEADTIME)
+		if (status.last_activity() - now >DEADTIME)
 		{
 			it->second->Notify(path,cfg);
 		};
