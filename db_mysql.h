@@ -8,8 +8,8 @@
 #ifndef DB_MYSQL_H_
 #define DB_MYSQL_H_
 
-#include <mysql++.h>
-#include <stdint>
+#include <mysql++/mysql++.h>
+#include <stdint.h>
 #include <string>
 #include <boost/thread/thread.hpp>
 #include <boost/thread/mutex.hpp>
@@ -35,7 +35,7 @@ public:
 	DBMysql();
 	virtual ~DBMysql();
 
-	bool init(& info)
+	bool init(DbInfo& info)
 	{
 		m_dbinfo=info;
 		return connect();
@@ -44,7 +44,7 @@ public:
 	bool isConnected() { return m_conn.connected();}
 	
 	//获取数据库信息
-	void get_dbinfo(& info)
+	void get_dbinfo(DbInfo& info)
 	{
 		info = m_dbinfo;
 	};
@@ -84,7 +84,7 @@ private:
 	boost::mutex m_mutex;
 };
 
-typedef Singleton<DBMysql> MySqlMgr;
+typedef base::Singleton<DBMysql> MySqlMgr;
 
 #endif /* DB_MYSQL_H_ */
 

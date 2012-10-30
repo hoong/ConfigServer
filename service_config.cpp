@@ -13,13 +13,13 @@ int ServiceConfigUpdate::run()
 
 	JsonMan jm;
 	jm<<cfg;
-	if (!jm.IsAvail())
+	if (!jm.isAvail())
 	{
 		return 2;
 	}
 
 	int ret;
-	if (0 !=(ret =jm.Update(path,new_config,old_config)))
+	if (0 !=(ret =jm.update(path,new_config,old_config)))
 	{
 		LOG(error)<<"update failed"<<ENDL;
 		if (-2 == ret)
@@ -29,7 +29,7 @@ int ServiceConfigUpdate::run()
 	}
 
 	jm >>cfg;
-	DBMGR.SetServiceConfig(service_type,cfg);
+	DBMGR.setServiceConfig(service_type,cfg);
 
 	return 0;
 };
@@ -37,7 +37,7 @@ int ServiceConfigUpdate::run()
 
 
 
-ServiceInstances& ServiceManager::Inst(const std::string& service)
+ServiceInstances& ServiceManager::inst(const std::string& service)
 {
 	std::map<std::string,ServiceInstances>::iterator it = data.find(service);
 	if(it == data.end())
@@ -52,14 +52,14 @@ ServiceInstances& ServiceManager::Inst(const std::string& service)
 
 };
 
-void ServiceManager::Iterate(IterateF* iterate_function)
+void ServiceManager::iterate(IterateF* iterate_function)
 {
 	std::map<std::string,ServiceInstances>::iterator it;
 	for(it=data.first();it!=data.end();++it)
 		iterate_function->doit(*it);
 };
 
-int ServiceInstances::Insert(const std::string& addr,boost::shared_ptr<ConfigServiceHandler> ptr)
+int ServiceInstances::insert(const std::string& addr,boost::shared_ptr<ConfigServiceHandler> ptr)
 {
 	boost::scoped_lock lock(m_mutex);
 	ReturnType ret = m_handler_pool.insert(VALUE_TYPE (addr,ptr));
@@ -72,7 +72,7 @@ int ServiceInstances::Insert(const std::string& addr,boost::shared_ptr<ConfigSer
 	return 0;
 };
 
-int ServiceInstances::Remove(const std::string& addr)
+int ServiceInstances::remove(const std::string& addr)
 {
 	boost::scoped_lock lock(m_mutex);
 	m_handler_pool.erase(addr);
@@ -80,7 +80,7 @@ int ServiceInstances::Remove(const std::string& addr)
 	return 0;
 };
 
-int ServiceInstances::GetAddr(std::string& addr)
+int ServiceInstances::getAddr(std::string& addr)
 {
 	IT_TYPE it ;
 	std::string server_addr="";
@@ -111,7 +111,7 @@ int ServiceInstances::GetAddr(std::string& addr)
 
 };
 
-int ServiceInstances::GetAll(std::vector<Status*>& status_list)
+int ServiceInstances::getAll(std::vector<Status*>& status_list)
 {
 	IT_TYPE it ;
 	for(it = m_handler_pool.begin();it!=m_handler_pool.end();++it)
@@ -125,14 +125,14 @@ int ServiceInstances::GetAll(std::vector<Status*>& status_list)
 };
 
 
-int ServiceInstances::Notify(const std::string& path,const std::string& cfg)
+int ServiceInstances::notify(const std::string& path,const std::string& cfg)
 {
 	IT_TYPE it ;
 	for(it = m_handler_pool.begin();it!=m_handler_pool.end();++it)
 	{
 		if (status.last_activity() - now >DEADTIME)
 		{
-			it->second->Notify(path,cfg);
+			it->second->notify(path,cfg);
 		};
 	};
 };

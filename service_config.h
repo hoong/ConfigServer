@@ -44,11 +44,11 @@ public:
 	typedef std::pair<std::string,boost::shared_ptr<ConfigServiceHandler> > ValueType;
 	typedef std::pair<ValueType,bool> ReturnType;
 
-	int Insert(const std::string& addr,boost::shared_ptr<ConfigServiceHandler> ptr);
-	int Remove(const std::string& addr);
-	int GetService(std::string& addr);
-	int GetAll(std::vector<Status*>& status_list);
-	int Notify(const std::string& path,const std::string& cfg);
+	int insert(const std::string& addr,boost::shared_ptr<ConfigServiceHandler> ptr);
+	int remove(const std::string& addr);
+	int getService(std::string& addr);
+	int getAll(std::vector<Status*>& status_list);
+	int notify(const std::string& path,const std::string& cfg);
 private:
 	PoolType m_handler_pool;
 	boost::mutex m_mutex;
@@ -63,7 +63,7 @@ struct IterateF
 class ServiceManager
 {
 public:
-	ServiceInstances& Inst(const std::string& service);
+	ServiceInstances& inst(const std::string& service);
 	void Iterate(IterateF*);
 private:
 	std::map<std::string,ServiceInstances> data;

@@ -10,7 +10,7 @@
 
 struct InfoParser
 {
-	InfoParser(std::string& s):info(s),start(0),found(0){};
+	InfoParser(const std::string& s):info(s),start(0),found(0){};
 	~InfoParser(){};
 
 	std::string pop()
@@ -30,7 +30,7 @@ struct InfoParser
 	std::string info;
 };
 
-int DbInfo::parse(const std::string& info)
+int DbInfo::parse(std::string& info)
 {
 
 	InfoParser infop(info);
@@ -42,15 +42,15 @@ int DbInfo::parse(const std::string& info)
 	return 0;
 }
 
-db_mysql::db_mysql() : m_bValid(false)
+DBMysql::DBMysql()
 {
 }
 
-db_mysql::~db_mysql()
+DBMysql::~DBMysql()
 {
 }
 
-bool db_mysql::connect()
+bool DBMysql::connect()
 {
 	bool ret = true;
 	try
@@ -61,7 +61,7 @@ bool db_mysql::connect()
 			m_dbinfo.passwd.c_str());
 
 	}
-	catch(const std::Exception& e)
+	catch(const std::exception& e)
 	{
 		LOG(error)<<"connect failed:"<<e.what()<<ENDL;
 		ret = false;
@@ -73,7 +73,7 @@ bool db_mysql::connect()
 
 /*
 //获取配置
-int db_mysql::GetInstanceConfig(uint32_t inst_id,std::string& data)
+int DBMysql::GetInstanceConfig(uint32_t inst_id,std::string& data)
 {
 	const std::string sql = "select cfg from service_instance where inst_id = %0";
 
@@ -99,7 +99,7 @@ int db_mysql::GetInstanceConfig(uint32_t inst_id,std::string& data)
 
 
 	}
-	catch(const std::Exception& e)
+	catch(const std::exception& e)
 	{
 		LOG(error)<<"GetInstanceConfig failed:"<<e.what()<<ENDL;
 		return -1;
@@ -110,7 +110,7 @@ int db_mysql::GetInstanceConfig(uint32_t inst_id,std::string& data)
 }
 */
 
-int db_mysql::getServiceConfig(const std::string& svc,std::string& data)
+int DBMysql::getServiceConfig(const std::string& svc,std::string& data)
 {
 	const std::string sql = "select service_config from tb_service_config where service_type = %0 ";
 
@@ -136,7 +136,7 @@ int db_mysql::getServiceConfig(const std::string& svc,std::string& data)
 
 
 	}
-	catch(const std::Exception& e)
+	catch(const std::exception& e)
 	{
 		LOG(error)<<"GetInstanceConfig failed:"<<e.what()<<ENDL;
 		return -1;
@@ -149,7 +149,7 @@ int db_mysql::getServiceConfig(const std::string& svc,std::string& data)
 
 /*
 //保存配置
-int db_mysql::SetInstanceConfig(uint32_t inst_id,const std::string& cfg)
+int DBMysql::SetInstanceConfig(uint32_t inst_id,const std::string& cfg)
 {
 	const std::string sql = "update service_instance set cfg = %0 where inst_id = %1";
 
@@ -164,7 +164,7 @@ int db_mysql::SetInstanceConfig(uint32_t inst_id,const std::string& cfg)
 		query.parse();
 		query.execute(params);
 	}
-	catch(std::Exception& e)
+	catch(std::exception& e)
 	{
 		LOG(error)<<"SetInstanceConfig failed:"<<e.what()<<ENDL;
 		return -1;
@@ -175,7 +175,7 @@ int db_mysql::SetInstanceConfig(uint32_t inst_id,const std::string& cfg)
 }
 */
 
-int db_mysql::setServiceConfig(const std::string& svc,const std::string& cfg)
+int DBMysql::setServiceConfig(const std::string& svc,const std::string& cfg)
 {
 	const std::string sql = "update tb_service_config set service_config = %0 where service_type= %1";
 
@@ -190,7 +190,7 @@ int db_mysql::setServiceConfig(const std::string& svc,const std::string& cfg)
 		query.parse();
 		query.execute(params);
 	}
-	catch(std::Exception& e)
+	catch(std::exception& e)
 	{
 		LOG(error)<<"SetInstanceConfig failed:"<<e.what()<<ENDL;
 		return -1;
@@ -202,7 +202,7 @@ int db_mysql::setServiceConfig(const std::string& svc,const std::string& cfg)
 
 /*
 //获取服务ID
-int db_mysql::GetInstanceService(uint32_t inst_id,uint32_t& service_id)
+int DBMysql::GetInstanceService(uint32_t inst_id,uint32_t& service_id)
 {
 	const std::string sql = "select service_id from service_instance where inst_id = %0";
 
@@ -227,7 +227,7 @@ int db_mysql::GetInstanceService(uint32_t inst_id,uint32_t& service_id)
 		service_id = row["service_id"];
 
 	}
-	catch(const std::Exception& e)
+	catch(const std::exception& e)
 	{
 		LOG(error)<<"GetInstanceService failed:"<<e.what()<<ENDL;
 		return -1;
@@ -240,7 +240,7 @@ int db_mysql::GetInstanceService(uint32_t inst_id,uint32_t& service_id)
 */
 
 /*
-int db_mysql::get_conf_data(uint32_t inst_id,const char* pre=NULL,std::vector<CFG_TYPE>& cfg_list)
+int DBMysql::get_conf_data(uint32_t inst_id,const char* pre=NULL,std::vector<CFG_TYPE>& cfg_list)
 {
 	LOG(trace)<<"inst_id="<<inst_id<<",pre="<<pre<<ENDL;
 
@@ -256,7 +256,7 @@ int db_mysql::get_conf_data(uint32_t inst_id,const char* pre=NULL,std::vector<CF
 	mysqlpp::StoreQueryResult result ;
 	if (m_spConnMgr->store(0, strQuery, params, result) < 0)
 	{
-		LOG(error)<<"db_mysql::get_conf_data Fail!n"<<ENDL;
+		LOG(error)<<"DBMysql::get_conf_data Fail!n"<<ENDL;
 		return -1;
 	}
 
@@ -276,7 +276,7 @@ int db_mysql::get_conf_data(uint32_t inst_id,const char* pre=NULL,std::vector<CF
 	return 0;
 }
 
-int db_mysql::set_conf_data(uint32_t inst_id,const CFG_TYPE& cfg)
+int DBMysql::set_conf_data(uint32_t inst_id,const CFG_TYPE& cfg)
 {
 	LOG(trace)<<"inst_id="<<inst_id<<",key="<<cfg.first<<",value="<<cfg.second<<ENDL;
 
@@ -293,7 +293,7 @@ int db_mysql::set_conf_data(uint32_t inst_id,const CFG_TYPE& cfg)
 	mysqlpp::SimpleResult result;
 	if (m_spConnMgr->execute(0, strQuery, params, result) < 0)
 	{
-		LOG(error)<<"db_mysql::set_conf_data Fail!";
+		LOG(error)<<"DBMysql::set_conf_data Fail!";
 		return -1;
 	}
 

@@ -16,10 +16,11 @@ bool JsonMan::set(const std::string& data)
  * 	-2 check consistency failed
  * 	-3 unavailable new_data
  */
-int JsonMan::Update(const std::string& path,const std::string& new_data,const std::string& old_data)
+int JsonMan::update(const std::string& path,const std::string& new_data,const std::string& old_data)
 {
 	Json::Reader reader;
-	Json::Value sub_value = get(path);
+	//Json::Value sub_value = get(path);
+	Json::Value sub_value;   get(path,sub_value);
 	if (sub_value.empty())
 	{
 		LOG(error)<<"cannot found path"<<ENDL;
@@ -35,7 +36,8 @@ int JsonMan::Update(const std::string& path,const std::string& new_data,const st
 		return -2;
 	}
 
-	if (reader.parse(new_data.c_str(),sub_value))
+	Json::Value new_value ;
+	if (reader.parse(new_data.c_str(),new_value))
 	{
 		LOG(error)<<"unavailable json string"<<ENDL;
 		return -3;
@@ -46,11 +48,20 @@ int JsonMan::Update(const std::string& path,const std::string& new_data,const st
 }
 
 
+/*
 Json::Value& JsonMan::get(const std::string& path)
 {
 	Json::Path json_path(path);
 	return json_path.resolve(m_root);
 }
+*/
+
+void JsonMan::get(const std::string& path,Json::Value& v)
+{
+	Json::Path json_path(path);
+	v = json_path.resolve(m_root);
+}
+
 
 void JsonMan::operator>>(std::string& jsonstr)
 {
@@ -64,9 +75,10 @@ void JsonMan::operator<<(const std::string& jsonstr)
 	set(jsonstr);
 }
 
-int JsonMan::GetSub(const std::string& path,std::string& cfg)
+int JsonMan::getSub(const std::string& path,std::string& cfg)
 {
-	Json::Value v = get(path);
+	//Json::Value v = get(path);
+	Json::Value v ; get(path,v);
 	if (v.empty())
 	{
 		LOG(error)<<"cannot found path"<<ENDL;

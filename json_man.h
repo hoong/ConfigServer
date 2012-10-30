@@ -11,7 +11,7 @@ public:
 	JsonMan():m_ready(false){};
 	~JsonMan(){};
 
-	bool IsAvail()
+	bool isAvail()
 	{
 		return m_ready;
 	}
@@ -39,16 +39,17 @@ public:
  * 	-2 check consistency failed
  * 	-3 unavailable new_data
  */
-	int Update(const std::string& path,const std::string& new_data,const std::string& old_data);
+	int update(const std::string& path,const std::string& new_data,const std::string& old_data);
 /*
  * return:
  * 	0 success
  * 	-1 path not found
  */
-	int GetSub(const std::string& path,std::string& cfg);
+	int getSub(const std::string& path,std::string& cfg);
 	
 private:
-	Json::Value& get(const std::string& path);
+	//Json::Value& get(const std::string& path);
+	void get(const std::string& path,Json::Value& v);
 
 private:
 	//std::string m_data;
