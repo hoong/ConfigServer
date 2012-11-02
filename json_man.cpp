@@ -6,7 +6,7 @@
 bool JsonMan::set(const std::string& data)
 {
 	Json::Reader reader;
-	return (m_ready = reader.parse(data.c_str(),m_root));
+	return (ready_ = reader.parse(data.c_str(),root_));
 }
 
 /*
@@ -52,21 +52,21 @@ int JsonMan::update(const std::string& path,const std::string& new_data,const st
 Json::Value& JsonMan::get(const std::string& path)
 {
 	Json::Path json_path(path);
-	return json_path.resolve(m_root);
+	return json_path.resolve(root_);
 }
 */
 
 void JsonMan::get(const std::string& path,Json::Value& v)
 {
 	Json::Path json_path(path);
-	v = json_path.resolve(m_root);
+	v = json_path.resolve(root_,v);
 }
 
 
 void JsonMan::operator>>(std::string& jsonstr)
 {
 	Json::StyledWriter writer;
-	jsonstr = writer.write(m_root);
+	jsonstr = writer.write(root_);
 }
 
 
@@ -77,9 +77,10 @@ void JsonMan::operator<<(const std::string& jsonstr)
 
 int JsonMan::getSub(const std::string& path,std::string& cfg)
 {
-	//Json::Value v = get(path);
-	Json::Value v ; get(path,v);
-	if (v.empty())
+
+	Json::Value v ; 
+	get(path,v);
+	if (v.isNull())
 	{
 		LOG(error)<<"cannot found path"<<ENDL;
 		return -1;

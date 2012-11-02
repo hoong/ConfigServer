@@ -9,12 +9,12 @@ MethodStatusRefresh::~MethodStatusRefresh()
 
 }
 
-void MethodStatusRefresh::call()
+void MethodStatusRefresh::onCall()
 {
 	Status& s = handler()->status();
 	if (req_.status().has_load())
 		s.set_load(req_.status().load());
-	s.set_last_activity ( (uint32_t)time(NULL));
+	s.set_last_activity((uint32_t)time(NULL));
 	resp_.set_code(200);
 	finish();
 

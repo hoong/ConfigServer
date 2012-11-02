@@ -9,11 +9,11 @@ MethodServerAcquire::~MethodServerAcquire()
 
 }
 
-void MethodServerAcquire::call()
+void MethodServerAcquire::onCall()
 {
-	ServiceInstances si = SVCMGR::instance().inst(req_.service_type());
+	ServiceInstances& si = SVCMGR::instance().inst(req_.service_type());
 	std::string addr;
-	if (si.GetAddr(addr) == 0)
+	if (si.getAddr(addr) == 0)
 	{
 		resp_.set_server_addr(addr);
 		finish();

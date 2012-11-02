@@ -37,17 +37,19 @@ public:
 
 	bool init(DbInfo& info)
 	{
-		m_dbinfo=info;
+		dbinfo_=info;
 		return connect();
 	};
 
-	bool isConnected() { return m_conn.connected();}
+	bool isConnected() { return conn_.connected();}
 	
+	/*
 	//获取数据库信息
 	void get_dbinfo(DbInfo& info)
 	{
-		info = m_dbinfo;
+		info = dbinfo_;
 	};
+	*/
 
 public:
 
@@ -79,9 +81,9 @@ public:
 
 
 private:
-	mysqlpp::Connection m_conn;
-	DbInfo m_dbinfo;
-	boost::mutex m_mutex;
+	mysqlpp::Connection conn_;
+	DbInfo dbinfo_;
+	boost::mutex mutex_;
 };
 
 typedef base::Singleton<DBMysql> MySqlMgr;

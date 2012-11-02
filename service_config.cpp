@@ -1,6 +1,6 @@
 #include "service_config.h"
 #include "db_mysql.h"
-#include "JsonMan.h"
+#include "json_man.h"
 
 #define DBMGR MySqlMgr
 
@@ -9,7 +9,7 @@ namespace config_server {
 int ServiceConfigUpdate::run()
 {
 	std::string cfg ; 
-	DBMGR.GetServiceConfig(service_type,cfg);
+	DBMGR::instance().getServiceConfig(service_type_,cfg);
 
 	JsonMan jm;
 	jm<<cfg;
@@ -19,7 +19,7 @@ int ServiceConfigUpdate::run()
 	}
 
 	int ret;
-	if (0 !=(ret =jm.update(path,new_config,old_config)))
+	if (0 !=(ret =jm.update(path_,new_config_,old_config_)))
 	{
 		LOG(error)<<"update failed"<<ENDL;
 		if (-2 == ret)
@@ -29,7 +29,7 @@ int ServiceConfigUpdate::run()
 	}
 
 	jm >>cfg;
-	DBMGR.setServiceConfig(service_type,cfg);
+	DBMGR::instance().setServiceConfig(service_type_,cfg);
 
 	return 0;
 };
@@ -39,34 +39,34 @@ int ServiceConfigUpdate::run()
 
 ServiceInstances& ServiceManager::inst(const std::string& service)
 {
-	std::map<std::string,ServiceInstances>::iterator it = data.find(service);
-	if(it == data.end())
+	std::map<std::string,boost::shared_ptr<ServiceInstances> >::iterator it = data.find(service);
+	if (it == data.end())
 	{
-		boost::scoped_lock lock(m_mutex);
-		ServiceInstances si;
-		std::pair<std::map<std::string,ServiceInstances>::iterator,bool> ret =
-			data.insert(std::pair<std::string,ServiceInstances>(service,si));
-		return ret.first->second;
+		boost::mutex::scoped_lock lock(mutex_);
+		boost::shared_ptr<ServiceInstances> si(new ServiceInstances);
+		std::pair<std::map<std::string,boost::shared_ptr<ServiceInstances> >::iterator,bool> ret =
+			data.insert(std::pair<std::string,boost::shared_ptr<ServiceInstances> >(service,si));
+		return *(ret.first->second);
 	}
-	return it->second;
+	return *(it->second);
 
 };
 
 void ServiceManager::iterate(IterateF* iterate_function)
 {
-	std::map<std::string,ServiceInstances>::iterator it;
-	for(it=data.first();it!=data.end();++it)
-		iterate_function->doit(*it);
+	std::map<std::string,boost::shared_ptr<ServiceInstances> >::iterator it;
+	for(it=data.begin();it!=data.end();++it)
+		iterate_function->doit(*(it->second));
 };
 
 int ServiceInstances::insert(const std::string& addr,boost::shared_ptr<ConfigServiceHandler> ptr)
 {
-	boost::scoped_lock lock(m_mutex);
-	ReturnType ret = m_handler_pool.insert(VALUE_TYPE (addr,ptr));
+	boost::mutex::scoped_lock lock(mutex_);
+	ReturnType ret = handler_pool_.insert(ValueType (addr,ptr));
 	if (ret.second == false)
 	{
-		m_handler_pool.erase(ret.first);
-	       	m_handler_pool.insert( VALUE_TYPE(addr,ptr));
+		handler_pool_.erase(ret.first);
+		handler_pool_.insert( ValueType(addr,ptr));
 	}
 
 	return 0;
@@ -74,26 +74,26 @@ int ServiceInstances::insert(const std::string& addr,boost::shared_ptr<ConfigSer
 
 int ServiceInstances::remove(const std::string& addr)
 {
-	boost::scoped_lock lock(m_mutex);
-	m_handler_pool.erase(addr);
+	boost::mutex::scoped_lock lock(mutex_);
+	handler_pool_.erase(addr);
 
 	return 0;
 };
 
 int ServiceInstances::getAddr(std::string& addr)
 {
-	IT_TYPE it ;
+	IteratorType it ;
 	std::string server_addr="";
 	uint32_t lowest =0xFFFFFFFFUL;
 
 	uint32_t now = time(NULL);
-	for(it = m_handler_pool.begin();it!=m_handler_pool.end();++it)
+	for (it = handler_pool_.begin(); it!=handler_pool_.end(); ++it)
 	{
 		Status& status = it->second->status();
 
 		if (status.last_activity() - now >DEADTIME)
 		{
-			status.status = 1;
+			status.set_status(1);
 			continue;
 		};
 
@@ -113,8 +113,8 @@ int ServiceInstances::getAddr(std::string& addr)
 
 int ServiceInstances::getAll(std::vector<Status*>& status_list)
 {
-	IT_TYPE it ;
-	for(it = m_handler_pool.begin();it!=m_handler_pool.end();++it)
+	IteratorType it ;
+	for (it = handler_pool_.begin(); it!=handler_pool_.end(); ++it)
 	{
 		//std::string info;
 		//Status& status = it->second->status();
@@ -127,10 +127,11 @@ int ServiceInstances::getAll(std::vector<Status*>& status_list)
 
 int ServiceInstances::notify(const std::string& path,const std::string& cfg)
 {
-	IT_TYPE it ;
-	for(it = m_handler_pool.begin();it!=m_handler_pool.end();++it)
+	IteratorType it ;
+	time_t now = time(NULL);
+	for (it = handler_pool_.begin(); it!=handler_pool_.end(); ++it)
 	{
-		if (status.last_activity() - now >DEADTIME)
+		if (it->second->status().last_activity() - now >DEADTIME)
 		{
 			it->second->notify(path,cfg);
 		};

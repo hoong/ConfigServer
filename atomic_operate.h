@@ -6,7 +6,12 @@
 #include <map>
 
 
-template<typename KEY,typename TASK>
+struct OperateTask
+{
+	virtual ~OperateTask(){};
+	virtual int run() = 0;
+};
+
 class AtomicOperate
 {
 
@@ -14,10 +19,10 @@ class AtomicOperate
 	{
 	public:
 	
-		void Process(TASK& t)
+		int Process(OperateTask* t)
 		{
-			boost::scoped_lock lock(mutex_);
-			t->run();
+			boost::mutex::scoped_lock lock(mutex_);
+			return t->run();
 		};
 	private:
 		boost::mutex mutex_;
@@ -25,17 +30,17 @@ class AtomicOperate
 
 public:
 
-int Operate(KEY k,TASK& t)
+int operate(const std::string& k,OperateTask* t)
 {
 	boost::shared_ptr<Operate> op;
 
-	std::map<KEY,boost::shared_ptr<Operate> >::iterator it;
-	it = opmap.find(k);
-	if (it == opmap::end())
+	std::map<std::string,boost::shared_ptr<Operate> >::iterator it;
+	it = opmap_.find(k);
+	if (it == opmap_.end())
 	{
-		boost::scoped_lock lock(map_mutex);
+		boost::mutex::scoped_lock lock(mutex_);
 		op = boost::shared_ptr<Operate>(new Operate);
-		opmap.insert(std::pair<KEY,boost::shared_ptr<Operate> >(k,op));
+		opmap_.insert(std::pair<std::string,boost::shared_ptr<Operate> >(k,op));
 	}
 	else
 	{
@@ -50,14 +55,14 @@ int Operate(KEY k,TASK& t)
 	{
 		return -1;
 	};
-};
+}
 
 
 
 private:
+	boost::mutex mutex_;
+	std::map<std::string,boost::shared_ptr<Operate> > opmap_;
 
-	boost::mutex map_mutex;
-	std::map<KEY,boost::shared_ptr<Operate> > opmap;
 };
 
 

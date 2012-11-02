@@ -3,6 +3,8 @@
 #include "config_service_handler.h"
 #include "rpc_exception.h"
 
+namespace config_server {
+
 ConfigServiceAcceptor::ConfigServiceAcceptor(int listen_port, Communicator* communicator, RpcStubsManager* rpc_stub_man)
 : acceptor_(communicator->reactor())
 {
@@ -15,3 +17,4 @@ ConfigServiceAcceptor::ConfigServiceAcceptor(int listen_port, Communicator* comm
 	}
 }
 
+}

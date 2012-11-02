@@ -11,11 +11,12 @@ config_server_SOURCES = db_mysql.cpp \
 	method_status_register.cpp \
 	rpc/config_service_acceptor.cpp \
 	rpc/config_service_handler.cpp \
+	proto/config_server.pb.cc \
 	service_config.cpp 
 
-config_server_LDFLAGS = -L../service_engine -lservice_engine -L../base -lbase -ljsoncpp -lboost_log -lboost_thread 
+config_server_LDFLAGS = -L../service_engine -lservice_engine -L../base -L../third-party/jsoncpp/libs -lbase -ljson -lboost_log -lboost_thread  -lmysqlpp
 
-INCLUDES = -I../base -I../third-party/jsoncpp/include -I/usr/local/include -I/usr/include 
+INCLUDES = -I../service_engine -I../base -I../third-party/jsoncpp/include -I/usr/local/include -I/usr/include 
 
 
 

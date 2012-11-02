@@ -12,14 +12,14 @@ MethodConfigUpdate::~MethodConfigUpdate()
 
 }
 
-void MethodConfigUpdate::call()
+void MethodConfigUpdate::onCall()
 {
-	int ret = ConfigUpdateOperate::instance().Operate(req_.service_type(),
-			ServiceConfigUpdate(req_.service_type(),
-				req_.path(),
-				req_.new_config(),
-				req_.old_config())
-			);
+	ServiceConfigUpdate scu(req_.service_type(),
+		req_.path(),
+		req_.new_config(),
+		req_.old_config());
+
+	int ret = ConfigUpdateOperate::instance().operate(req_.service_type(),(OperateTask*)&scu);
 
 	if (ret != 0)
 	{
@@ -28,8 +28,8 @@ void MethodConfigUpdate::call()
 	}
 	
 	//配置变更通知
-	ServiceInstances si = SVCMGR::instance().inst(req_.service_type());
-	si.Notify(req_.path(),req_.new_config());
+	ServiceInstances& si = SVCMGR::instance().inst(req_.service_type());
+	si.notify(req_.path(),req_.new_config());
 
 	//返回
 	resp_.set_code(200);

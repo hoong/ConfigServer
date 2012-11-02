@@ -2,6 +2,7 @@
 
 namespace config_server
 {
+
 StatusQueryTask::StatusQueryTask()
 {
 	status_list.clear();
@@ -11,9 +12,9 @@ StatusQueryTask::~StatusQueryTask()
 {
 }
 
-StatusQueryTask::doit(ServiceInstance& si)
+void StatusQueryTask::doit(ServiceInstances& si)
 {
-	si.GetAll(status_list);
+	si.getAll(status_list);
 }
 
 MethodStatusQuery::~MethodStatusQuery()
@@ -21,11 +22,11 @@ MethodStatusQuery::~MethodStatusQuery()
 
 }
 
-void MethodStatusQuery::call()
+void MethodStatusQuery::onCall()
 {
 	StatusQueryTask sqt;
-	SVCMGR::instance().Iterate(&sqt);
-	for(std::vector<Status*>::iterator it = sqt.status_list.begin();
+	SVCMGR::instance().iterate(&sqt);
+	for (std::vector<Status*>::iterator it = sqt.status_list.begin();
 			it != sqt.status_list.end(); ++it)
 	{
 		Status* s = resp_.add_status();

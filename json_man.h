@@ -8,12 +8,12 @@
 class JsonMan
 {
 public:
-	JsonMan():m_ready(false){};
+	JsonMan():ready_(false){};
 	~JsonMan(){};
 
 	bool isAvail()
 	{
-		return m_ready;
+		return ready_;
 	}
 
 	bool set(const std::string& data);
@@ -53,8 +53,8 @@ private:
 
 private:
 	//std::string m_data;
-	Json::Value m_root;
-	bool m_ready;
+	Json::Value root_;
+	bool ready_;
 };
 
 

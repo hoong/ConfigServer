@@ -17,12 +17,13 @@ struct InfoParser
 	{
 		if (found == string::npos)
 			return "";
-		start = found+1;
+		if (found != 0)
+			start = found;
 		found = info.find(':',start);
 		if (found == string::npos)
 			return info.substr(start);
 		else
-			return info.substr(start,found-start);
+			return info.substr(start,(found++)-start);
 	};
 
 	size_t start;
@@ -55,11 +56,23 @@ bool DBMysql::connect()
 	bool ret = true;
 	try
 	{
-		ret = m_conn.connect(m_dbinfo.db.c_str(),
-			m_dbinfo.addr.c_str(),
-			m_dbinfo.user.c_str(),
-			m_dbinfo.passwd.c_str());
+		LOG(trace)<<"db="<<dbinfo_.db
+		<<",server="<<dbinfo_.addr
+		<<",user="<<dbinfo_.user
+		<<",passwd="<<dbinfo_.passwd
+		<<",port="<<dbinfo_.port<<ENDL;
 
+		ret = conn_.connect(dbinfo_.db.c_str(),
+			dbinfo_.addr.c_str(),
+			dbinfo_.user.c_str(),
+			dbinfo_.passwd.c_str(),
+			atoi(dbinfo_.port.c_str()));
+
+	}
+	catch(const mysqlpp::Exception &e)
+	{
+		LOG(error)<<"connect failed:"<<e.what()<<ENDL;
+		ret = false;
 	}
 	catch(const std::exception& e)
 	{
@@ -79,13 +92,13 @@ int DBMysql::GetInstanceConfig(uint32_t inst_id,std::string& data)
 
 	try
 	{
-		boost::mutex::scoped_lock lock(m_mutex);
+		boost::mutex::scoped_lock lock(mutex_);
 		mysqlpp::StoreQueryResult result ;
 
 		mysqlpp::SQLQueryParms params;
 		params << inst_id ;
 
-		mysqlpp::Query query = m_conn.query(sql.c_str());
+		mysqlpp::Query query = conn_.query(sql.c_str());
 		query.parse();
 		result = query.store(params);
 
@@ -116,13 +129,13 @@ int DBMysql::getServiceConfig(const std::string& svc,std::string& data)
 
 	try
 	{
-		boost::mutex::scoped_lock lock(m_mutex);
+		boost::mutex::scoped_lock lock(mutex_);
 		mysqlpp::StoreQueryResult result ;
 
 		mysqlpp::SQLQueryParms params;
 		params << svc;
 
-		mysqlpp::Query query = m_conn.query(sql.c_str());
+		mysqlpp::Query query = conn_.query(sql.c_str());
 		query.parse();
 		result = query.store(params);
 
@@ -155,12 +168,12 @@ int DBMysql::SetInstanceConfig(uint32_t inst_id,const std::string& cfg)
 
 	try
 	{
-		boost::mutex::scoped_lock lock(m_mutex);
+		boost::mutex::scoped_lock lock(mutex_);
 
 		mysqlpp::SQLQueryParms params;
 		params << inst_id ;
 
-		mysqlpp::Query query = m_conn.query(sql.c_str());
+		mysqlpp::Query query = conn_.query(sql.c_str());
 		query.parse();
 		query.execute(params);
 	}
@@ -181,12 +194,12 @@ int DBMysql::setServiceConfig(const std::string& svc,const std::string& cfg)
 
 	try
 	{
-		boost::mutex::scoped_lock lock(m_mutex);
+		boost::mutex::scoped_lock lock(mutex_);
 
 		mysqlpp::SQLQueryParms params;
 		params << svc <<cfg;
 
-		mysqlpp::Query query = m_conn.query(sql.c_str());
+		mysqlpp::Query query = conn_.query(sql.c_str());
 		query.parse();
 		query.execute(params);
 	}
@@ -208,13 +221,13 @@ int DBMysql::GetInstanceService(uint32_t inst_id,uint32_t& service_id)
 
 	try
 	{
-		boost::mutex::scoped_lock lock(m_mutex);
+		boost::mutex::scoped_lock lock(mutex_);
 		mysqlpp::StoreQueryResult result ;
 
 		mysqlpp::SQLQueryParms params;
 		params << inst_id ;
 
-		mysqlpp::Query query = m_conn.query(sql.c_str());
+		mysqlpp::Query query = conn_.query(sql.c_str());
 		query.parse();
 		result = query.store(params);
 

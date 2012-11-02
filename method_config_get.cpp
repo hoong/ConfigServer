@@ -10,10 +10,10 @@ MethodConfigGet::~MethodConfigGet()
 
 }
 
-void MethodConfigGet::call()
+void MethodConfigGet::onCall()
 {
 	std::string cfg,subcfg;
-	if (MySqlMgr::instance().GetServiceConfig(req_.service_type(),cfg) != 0)
+	if (MySqlMgr::instance().getServiceConfig(req_.service_type(),cfg) != 0)
 	{
 		finish(400,"unavailable service");
 		return;
@@ -21,13 +21,13 @@ void MethodConfigGet::call()
 
 	JsonMan jm;
 	jm<<cfg;
-	if (!jm.IsAvail())
+	if (!jm.isAvail())
 	{
 		finish(500,"bad config");
 		return;
 	};
 
-	if (jm.GetSub(req_.path(),subcfg) != 0)
+	if (jm.getSub(req_.path(),subcfg) != 0)
 	{
 		finish(401,"unavailable path");
 		return;
