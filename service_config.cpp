@@ -32,7 +32,7 @@ int ServiceConfigUpdate::run()
 	DBMGR::instance().setServiceConfig(service_type_,cfg);
 
 	return 0;
-};
+}
 
 
 
@@ -50,14 +50,14 @@ ServiceInstances& ServiceManager::inst(const std::string& service)
 	}
 	return *(it->second);
 
-};
+}
 
 void ServiceManager::iterate(IterateF* iterate_function)
 {
 	std::map<std::string,boost::shared_ptr<ServiceInstances> >::iterator it;
 	for(it=data.begin();it!=data.end();++it)
 		iterate_function->doit(*(it->second));
-};
+}
 
 int ServiceInstances::insert(const std::string& addr,boost::shared_ptr<ConfigServiceHandler> ptr)
 {
@@ -70,7 +70,7 @@ int ServiceInstances::insert(const std::string& addr,boost::shared_ptr<ConfigSer
 	}
 
 	return 0;
-};
+}
 
 int ServiceInstances::remove(const std::string& addr)
 {
@@ -78,7 +78,7 @@ int ServiceInstances::remove(const std::string& addr)
 	handler_pool_.erase(addr);
 
 	return 0;
-};
+}
 
 int ServiceInstances::getAddr(std::string& addr)
 {
@@ -95,21 +95,21 @@ int ServiceInstances::getAddr(std::string& addr)
 		{
 			status.set_status(1);
 			continue;
-		};
+		}
 
 		if (status.load() < lowest)
 		{
 			lowest = status.load();
 			server_addr = it->first;
 		}
-	};
+	}
 
 	if (lowest == 0xFFFFFFFFUL)
 		return -1;
 	else
 		return 0;
 
-};
+}
 
 int ServiceInstances::getAll(std::vector<Status*>& status_list)
 {
@@ -119,10 +119,10 @@ int ServiceInstances::getAll(std::vector<Status*>& status_list)
 		//std::string info;
 		//Status& status = it->second->status();
 		status_list.push_back(&(it->second->status()));
-	};
+	}
 
 	return 0;
-};
+}
 
 
 int ServiceInstances::notify(const std::string& path,const std::string& cfg)
@@ -134,9 +134,9 @@ int ServiceInstances::notify(const std::string& path,const std::string& cfg)
 		if (it->second->status().last_activity() - now >DEADTIME)
 		{
 			it->second->notify(path,cfg);
-		};
-	};
-};
+		}
+	}
+}
 
-};
+}
 

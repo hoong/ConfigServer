@@ -38,8 +38,12 @@ public:
 	bool init(DbInfo& info)
 	{
 		dbinfo_=info;
-		return connect();
-	};
+		if (!connect())
+		{
+			return false;
+		}
+		return (0 == checkAndCreateTable());
+	}
 
 	bool isConnected() { return conn_.connected();}
 	
@@ -48,7 +52,7 @@ public:
 	void get_dbinfo(DbInfo& info)
 	{
 		info = dbinfo_;
-	};
+	}
 	*/
 
 public:
@@ -79,6 +83,8 @@ public:
 	int create_instance(uint32_t service_id,const std::string& inst_name,uint32_t& inst_id);
 	*/
 
+private:
+	int checkAndCreateTable();
 
 private:
 	mysqlpp::Connection conn_;

@@ -15,7 +15,7 @@ public:
 	int fd, 
 	const base::net::SockAddr& addr, 
 	boost::shared_ptr<base::net::ReactorImpl> reactor_impl);
-	virtual ~ConfigServiceHandler(){};
+	virtual ~ConfigServiceHandler(){}
 
 	//发送配置变更通知
 	int notify(std::string path,std::string sub_config);
@@ -23,7 +23,7 @@ public:
 	Status& status()
 	{
 		return status_;
-	};
+	}
 
 
 private:
@@ -43,6 +43,6 @@ private:
 };
 
 
-};
+}
 
 #endif

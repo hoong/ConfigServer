@@ -84,7 +84,7 @@ int JsonMan::getSub(const std::string& path,std::string& cfg)
 	{
 		LOG(error)<<"cannot found path"<<ENDL;
 		return -1;
-	};
+	}
 	Json::StyledWriter writer;
 	cfg = writer.write(v);
 	return 0;

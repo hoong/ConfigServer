@@ -16,7 +16,7 @@ config_server_SOURCES = db_mysql.cpp \
 
 config_server_LDFLAGS = -L../service_engine -lservice_engine -L../base -L../third-party/jsoncpp/libs -lbase -ljson -lboost_log -lboost_thread  -lmysqlpp
 
-INCLUDES = -I../service_engine -I../base -I../third-party/jsoncpp/include -I/usr/local/include -I/usr/include 
+config_server_CPPFLAGS = -I../service_engine -I../base -I../third-party/jsoncpp/include -I/usr/local/include -I/usr/include 
 
 
 

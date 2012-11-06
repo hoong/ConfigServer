@@ -32,4 +32,4 @@ boost::shared_ptr<base::net::RefHandler> ConfigServiceHandlerCreatorStrategy::cr
 	return boost::shared_ptr<base::net::RefHandler>(new ConfigServiceHandler(stub_dispatcher_, fd, addr, reactor_impl));
 }
 
-};
+}

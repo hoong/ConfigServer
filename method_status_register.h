@@ -13,7 +13,7 @@ public:
 	MethodStatusRegister(boost::shared_ptr<RpcHandler> handler, 
 			const base::packet::Header& header,
 		       	base::packet::Packet& body):
-		MethodConfigServerBase<StatusRegister>(handler,header,body){};
+		MethodConfigServerBase<StatusRegister>(handler,header,body){}
 	virtual ~MethodStatusRegister();
 
 	virtual void onCall();
@@ -21,5 +21,5 @@ public:
 };
 
 
-};
+}
 #endif

@@ -10,8 +10,8 @@
 
 struct InfoParser
 {
-	InfoParser(const std::string& s):info(s),start(0),found(0){};
-	~InfoParser(){};
+	InfoParser(const std::string& s):info(s),start(0),found(0){}
+	~InfoParser(){}
 
 	std::string pop()
 	{
@@ -24,7 +24,7 @@ struct InfoParser
 			return info.substr(start);
 		else
 			return info.substr(start,(found++)-start);
-	};
+	}
 
 	size_t start;
 	size_t found;
@@ -211,6 +211,56 @@ int DBMysql::setServiceConfig(const std::string& svc,const std::string& cfg)
 
 	return 0;
 
+}
+
+/*
+CREATE TABLE IF NOT EXISTS `tb_service_config` (
+	`service_type` VARCHAR(50) NOT NULL DEFAULT '',
+	`service_config` LONGTEXT NULL,
+	PRIMARY KEY (`service_type`)
+)
+*/
+int DBMysql::checkAndCreateTable()
+{
+
+	boost::mutex::scoped_lock lock(mutex_);
+
+	try 
+	{
+		std::string sql = "select count(*) cnt from tb_service_config";
+		mysqlpp::StoreQueryResult result ;
+
+
+		mysqlpp::Query query = conn_.query(sql.c_str());
+		query.parse();
+		result = query.store();
+
+		return 0;
+	}
+	catch(std::exception& e)
+	{
+		LOG(error)<<"table not exists ,create!::"<<e.what()<<ENDL;
+	}
+
+	try
+	{
+		std::string sql= "CREATE TABLE IF NOT EXISTS `tb_service_config` ( \
+				`service_type` VARCHAR(50) NOT NULL DEFAULT '', \
+				`service_config` LONGTEXT NULL, \
+				PRIMARY KEY (`service_type`) ) ";
+
+
+		mysqlpp::Query query = conn_.query(sql.c_str());
+		query.parse();
+		query.execute();
+	}
+	catch(std::exception& e)
+	{
+		LOG(error)<<""<<e.what()<<ENDL;
+		return -1;
+	}
+
+	return 0;
 }
 
 /*

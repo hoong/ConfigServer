@@ -13,7 +13,7 @@ public:
 	MethodStatusRefresh(boost::shared_ptr<RpcHandler> handler, 
 			const base::packet::Header& header, 
 			base::packet::Packet& body):
-		MethodConfigServerBase<StatusRefresh>(handler,header,body){};;
+		MethodConfigServerBase<StatusRefresh>(handler,header,body){}
 	virtual ~MethodStatusRefresh();
 
 	virtual void onCall();
@@ -21,5 +21,5 @@ public:
 };
 
 
-};
+}
 #endif

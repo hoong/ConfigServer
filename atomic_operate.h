@@ -8,7 +8,7 @@
 
 struct OperateTask
 {
-	virtual ~OperateTask(){};
+	virtual ~OperateTask(){}
 	virtual int run() = 0;
 };
 
@@ -23,7 +23,7 @@ class AtomicOperate
 		{
 			boost::mutex::scoped_lock lock(mutex_);
 			return t->run();
-		};
+		}
 	private:
 		boost::mutex mutex_;
 	};
@@ -45,7 +45,7 @@ int operate(const std::string& k,OperateTask* t)
 	else
 	{
 		op = it->second;
-	};
+	}
 
 	if (op.get())
 	{
@@ -54,7 +54,7 @@ int operate(const std::string& k,OperateTask* t)
 	else
 	{
 		return -1;
-	};
+	}
 }
 
 

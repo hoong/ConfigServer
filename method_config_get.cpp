@@ -25,13 +25,13 @@ void MethodConfigGet::onCall()
 	{
 		finish(500,"bad config");
 		return;
-	};
+	}
 
 	if (jm.getSub(req_.path(),subcfg) != 0)
 	{
 		finish(401,"unavailable path");
 		return;
-	};
+	}
 
 	resp_.set_config(subcfg);
 	finish();

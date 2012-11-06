@@ -12,7 +12,7 @@ public:
 	MethodServerAcquire(boost::shared_ptr<RpcHandler> handler, 
 			const base::packet::Header& header, 
 			base::packet::Packet& body):
-		MethodConfigServerBase<ServerAcquire>(handler,header,body){};
+		MethodConfigServerBase<ServerAcquire>(handler,header,body){}
 	virtual ~MethodServerAcquire();
 
 	virtual void onCall();
@@ -20,5 +20,5 @@ public:
 };
 
 
-};
+}
 #endif

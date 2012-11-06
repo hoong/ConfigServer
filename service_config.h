@@ -21,8 +21,8 @@ public:
 			const std::string& path,
 			const std::string& new_config,
 			const std::string& old_config): 
-		service_type_(service_type), path_(path), new_config_(new_config),old_config_(old_config) {};
-	virtual ~ServiceConfigUpdate(){};
+		service_type_(service_type), path_(path), new_config_(new_config),old_config_(old_config) {}
+	virtual ~ServiceConfigUpdate(){}
 
 	virtual int run() ;
 
@@ -57,7 +57,7 @@ private:
 
 struct IterateF
 {
-	virtual ~IterateF(){};
+	virtual ~IterateF(){}
 	virtual void doit(ServiceInstances&) =0;
 };
 
@@ -73,6 +73,6 @@ private:
 
 typedef base::Singleton<ServiceManager> SVCMGR; 
 
-};
+}
 
 #endif

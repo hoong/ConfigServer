@@ -23,7 +23,7 @@ public:
 	MethodStatusQuery(boost::shared_ptr<RpcHandler> handler, 
 			const base::packet::Header& header,
 		       	base::packet::Packet& body):
-		MethodConfigServerBase<StatusQuery>(handler,header,body){};;
+		MethodConfigServerBase<StatusQuery>(handler,header,body){}
 	virtual ~MethodStatusQuery();
 
 	virtual void onCall();
@@ -32,5 +32,5 @@ public:
 };
 
 
-};
+}
 #endif

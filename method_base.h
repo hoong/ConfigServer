@@ -15,14 +15,14 @@ public:
 
 	MethodConfigServerBase(boost::shared_ptr<RpcHandler> handler, 
 			const base::packet::Header& header, 
-			base::packet::Packet& body): super(handler,header,body){};
+			base::packet::Packet& body): super(handler,header,body){}
 
-	virtual ~MethodConfigServerBase(){};
+	virtual ~MethodConfigServerBase(){}
 
 	boost::shared_ptr<ConfigServiceHandler> handler()
 	{
 		return boost::dynamic_pointer_cast<ConfigServiceHandler>(super::sphandler_);
-	};
+	}
 
 };
 

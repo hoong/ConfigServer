@@ -8,8 +8,8 @@
 class JsonMan
 {
 public:
-	JsonMan():ready_(false){};
-	~JsonMan(){};
+	JsonMan():ready_(false){}
+	~JsonMan(){}
 
 	bool isAvail()
 	{

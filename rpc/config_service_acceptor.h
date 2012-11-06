@@ -11,12 +11,12 @@ class SE_API ConfigServiceAcceptor
 {
 public:
 	ConfigServiceAcceptor(int listen_port, Communicator* communicator, RpcStubsManager* rpc_stub_man);
-	virtual ~ConfigServiceAcceptor(){};
+	virtual ~ConfigServiceAcceptor(){}
 
 private:
 	base::net::Acceptor acceptor_;
 };
-};
+}
 
 
 #endif

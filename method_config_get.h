@@ -14,7 +14,7 @@ public:
 	MethodConfigGet(boost::shared_ptr<RpcHandler> handler, 
 			const base::packet::Header& header, 
 			base::packet::Packet& body):
-		MethodConfigServerBase<ConfigGet>(handler,header,body){};
+		MethodConfigServerBase<ConfigGet>(handler,header,body){}
 	virtual ~MethodConfigGet();
 
 	virtual void onCall();
@@ -22,5 +22,5 @@ public:
 };
 
 
-};
+}
 #endif

@@ -13,7 +13,7 @@ public:
 	MethodConfigUpdate(boost::shared_ptr<RpcHandler> handler, 
 			const base::packet::Header& header, 
 			base::packet::Packet& body):
-		MethodConfigServerBase<ConfigUpdate>(handler,header,body){};
+		MethodConfigServerBase<ConfigUpdate>(handler,header,body){}
 	virtual ~MethodConfigUpdate();
 
 	virtual void onCall();
@@ -21,5 +21,5 @@ public:
 };
 
 
-};
+}
 #endif
