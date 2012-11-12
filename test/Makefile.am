@@ -1,6 +1,7 @@
 bin_PROGRAMS = config_test
 
 config_test_SOURCES = ../json_man.cpp \
+	../proto/config_server.pb.cc \
 	main.cpp 
 
 config_test_LDFLAGS = -L../../service_engine -lservice_engine -L../../base -L../../third-party/jsoncpp/libs -lbase -ljsoncpp -lboost_log -lboost_thread  -lmysqlpp

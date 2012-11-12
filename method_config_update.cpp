@@ -21,12 +21,19 @@ void MethodConfigUpdate::onCall()
 
 	int ret = ConfigUpdateOperate::instance().operate(req_.service_type(),(OperateTask*)&scu);
 
-	if (ret != 0)
+	switch(ret)
 	{
-		finish(400,"update failed");
-		return;
+		case -1:
+			finish(400,"path not found");
+			return;
+		case -2:
+			finish(400,"check consistency failed");
+			return;
+		case -3:
+			finish(400,"unavailable new_data")
+			return;
 	}
-	
+
 	//配置变更通知
 	ServiceInstances& si = SVCMGR::instance().inst(req_.service_type());
 	si.notify(req_.path(),req_.new_config());

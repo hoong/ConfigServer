@@ -29,6 +29,7 @@ int ServiceConfigUpdate::run()
 	}
 
 	jm >>cfg;
+	LOG(trace)<<"result config:"<<cfg<<ENDL;
 	DBMGR::instance().setServiceConfig(service_type_,cfg);
 
 	return 0;

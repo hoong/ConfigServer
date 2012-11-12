@@ -69,6 +69,11 @@ bool DBMysql::connect()
 			atoi(dbinfo_.port.c_str()));
 
 	}
+	catch(const mysqlpp::ConnectionFailed& e)
+	{
+		LOG(error)<<"connect failed:"<<e.what()<<ENDL;
+		return false;
+	}
 	catch(const mysqlpp::Exception &e)
 	{
 		LOG(error)<<"connect failed:"<<e.what()<<ENDL;
@@ -125,8 +130,9 @@ int DBMysql::GetInstanceConfig(uint32_t inst_id,std::string& data)
 
 int DBMysql::getServiceConfig(const std::string& svc,std::string& data)
 {
-	const std::string sql = "select service_config from tb_service_config where service_type = %0 ";
-
+	const std::string sql = "select service_config from tb_service_config where service_type = '%0' ";
+	bool retry=false;
+RETRY:
 	try
 	{
 		boost::mutex::scoped_lock lock(mutex_);
@@ -148,6 +154,19 @@ int DBMysql::getServiceConfig(const std::string& svc,std::string& data)
 		data.assign(row["service_config"].data(),row["service_config"].size());
 
 
+	}
+	catch(const mysqlpp::ConnectionFailed& e)
+	{
+		LOG(error)<<"GetInstanceConfig failed:"<<e.what()<<ENDL;
+		boost::mutex::scoped_lock lock(mutex_);
+		if (!retry && (isConnected() ||connect()))
+		{
+			goto RETRY;
+		}
+		else 
+		{
+			return -9;
+		}
 	}
 	catch(const std::exception& e)
 	{
@@ -190,8 +209,9 @@ int DBMysql::SetInstanceConfig(uint32_t inst_id,const std::string& cfg)
 
 int DBMysql::setServiceConfig(const std::string& svc,const std::string& cfg)
 {
-	const std::string sql = "update tb_service_config set service_config = %0 where service_type= %1";
-
+	const std::string sql = "update tb_service_config set service_config = '%0' where service_type= '%1'";
+	bool retry = false;
+RETRY:
 	try
 	{
 		boost::mutex::scoped_lock lock(mutex_);
@@ -202,6 +222,20 @@ int DBMysql::setServiceConfig(const std::string& svc,const std::string& cfg)
 		mysqlpp::Query query = conn_.query(sql.c_str());
 		query.parse();
 		query.execute(params);
+	}
+	catch(const mysqlpp::ConnectionFailed& e)
+	{
+		LOG(error)<<"setInstanceConfig failed:"<<e.what()<<ENDL;
+		boost::mutex::scoped_lock lock(mutex_);
+		if (!retry && (isConnected() ||connect()))
+		{
+			goto RETRY;
+		}
+		else 
+		{
+			return -9;
+		}
+
 	}
 	catch(std::exception& e)
 	{
@@ -237,6 +271,11 @@ int DBMysql::checkAndCreateTable()
 
 		return 0;
 	}
+	catch(const mysqlpp::ConnectionFailed& e)
+	{
+		LOG(error)<<"connect failed:"<<e.what()<<ENDL;
+		return -9;
+	}
 	catch(std::exception& e)
 	{
 		LOG(error)<<"table not exists ,create!::"<<e.what()<<ENDL;
@@ -253,6 +292,11 @@ int DBMysql::checkAndCreateTable()
 		mysqlpp::Query query = conn_.query(sql.c_str());
 		query.parse();
 		query.execute();
+	}
+	catch(const mysqlpp::ConnectionFailed& e)
+	{
+		LOG(error)<<"connect failed:"<<e.what()<<ENDL;
+		return -9;
 	}
 	catch(std::exception& e)
 	{

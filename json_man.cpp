@@ -20,7 +20,8 @@ int JsonMan::update(const std::string& path,const std::string& new_data,const st
 {
 	Json::Reader reader;
 	//Json::Value sub_value = get(path);
-	Json::Value sub_value;   get(path,sub_value);
+	Json::Value sub_value;   
+	get(path,sub_value);
 	if (sub_value.empty())
 	{
 		LOG(error)<<"cannot found path"<<ENDL;
@@ -29,7 +30,12 @@ int JsonMan::update(const std::string& path,const std::string& new_data,const st
 
 	//检查一致性
 	Json::Value old_value ;
-	reader.parse(old_data.c_str(),old_value);
+	if (!reader.parse(old_data,old_value))
+	{
+		LOG(error)<<"unavailable json string:"<<old_data<<ENDL;
+		LOG(error)<<"error msg:"<<reader.getFormattedErrorMessages()<<ENDL;
+		return -3;
+	}
 	if(old_value != sub_value)
 	{
 		LOG(error)<<"check consistency failed"<<ENDL;
@@ -37,9 +43,10 @@ int JsonMan::update(const std::string& path,const std::string& new_data,const st
 	}
 
 	Json::Value new_value ;
-	if (reader.parse(new_data.c_str(),new_value))
+	if (!reader.parse(new_data,new_value))
 	{
-		LOG(error)<<"unavailable json string"<<ENDL;
+		LOG(error)<<"unavailable json string:"<<new_data<<ENDL;
+		LOG(error)<<"error msg:"<<reader.getFormattedErrorMessages()<<ENDL;
 		return -3;
 	}
 	sub_value = new_value;
